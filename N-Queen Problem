@@ -1,0 +1,52 @@
+class Solution{
+public:
+    void solve_i(int x,int y,vector<vector<int>>&valid,int n)
+     {   
+          static int a[]={1,1,1};
+          static int b[]={-1,0,1};
+          for(int k=0;k<3;++k)
+          {   int i=x,j=y;
+              while(i>=0 && i<n && j>=0 && j<n)
+                {  valid[i][j]++;
+                   i=i+a[k];
+                   j=j+b[k];
+                   
+                }
+          }
+     }
+     void solve_d(int x,int y,vector<vector<int>>&valid,int n)
+     {   
+          static int a[]={1,1,1};
+          static int b[]={-1,0,1};
+          for(int k=0;k<3;++k)
+          {   int i=x,j=y;
+              while(i>=0 && i<n && j>=0 && j<n)
+                { valid[i][j]--;
+                   i=i+a[k];
+                   j=j+b[k];
+                }
+          }
+     }
+    void fun(int row,vector<int>&v,vector<vector<int>>&valid,vector<vector<int>>&res,int n)
+    {  if(row==n)
+          {  res.push_back(v);
+             return ;  
+          }
+        for(int k=0;k<valid.size();++k)
+        {  if(valid[row][k]==0)
+             {   solve_i(row,k,valid,n);
+                 v.push_back(k+1);
+                 fun(row+1,v,valid,res,n);
+                 v.pop_back();
+                 solve_d(row,k,valid,n);
+             }
+        }
+    }
+    vector<vector<int>> nQueen(int n) {
+        vector<vector<int>>valid(n,vector<int>(n,0));
+        vector<vector<int>>res;
+        vector<int>v;
+        fun(0,v,valid,res,n);
+        return res;
+    }
+};
