@@ -1,0 +1,90 @@
+struct Trie{
+    unordered_map<char,Trie*>m;
+    int t;
+    Trie()
+    { t=0; }
+};
+
+void insert(Trie* root,string&s)
+{  Trie* curr=root;
+   for(auto x:s)
+   {  if(curr->m.find(x)==curr->m.end())
+        curr->m[x]=new Trie();
+      curr=curr->m[x];
+   }
+   curr->t=-1;
+}
+
+int search(Trie* root,string&s)
+{  Trie* curr=root;
+   for(auto x:s)
+   {  if(curr->m.find(x)==curr->m.end())
+        return 0;
+      curr=curr->m[x];
+   }
+   if(curr->t==0)
+   {  curr->t=-1; 
+      return 1; 
+   }
+   else
+     return -1;
+}
+class Solution{    
+public:
+    bool isValid(int i,int j,vector<vector<bool>>&visited)
+     {
+        return (i>=0 && i<visited.size()&& j>=0 && j<visited[0].size() && visited[i][j]==false);
+     }
+    bool fun(int idx,int i,int j,string &s,vector<vector<char>>&grid,vector<vector<bool>>&visited)
+	{   if(idx==s.size() || (idx==s.size()-1 && s[idx]==grid[i][j]))
+	      return true;
+	    if(s[idx]!=grid[i][j])
+	      return false;
+	    static int a[]={-1,-1,-1,0,0,1,1,1};
+	    static int b[]={-1,0,1,-1,1,-1,0,1};
+	    visited[i][j]=true;
+	    for(int k=0;k<8;++k)
+	    { if(isValid(i+a[k],j+b[k],visited)==true)
+	         {  bool x=fun(idx+1,i+a[k],j+b[k],s,grid,visited);
+	            if(x==true)
+	            {  visited[i][j]=false;
+	               return true;
+	            }
+	         }
+	    }
+	    visited[i][j]=false;
+	    return false;
+	}
+	vector<string> wordBoggle(vector<vector<char> >&grid, vector<string>& dictionary) {
+	    unordered_map<char,vector<pair<int,int>>>mp;
+	    int m=grid.size(),n=grid[0].size();
+	    for(int i=0;i<m;++i)
+	    {  for(int j=0;j<n;++j)
+	         mp[grid[i][j]].push_back({i,j});
+	    }
+	    Trie* root=new Trie();
+	    
+	    vector<string>res;
+	    vector<vector<bool>>visited(m,vector<bool>(n,false));
+	    for(auto &s:dictionary)
+	    {  if(mp.find(s[0])==mp.end())
+	          continue;
+	       int t=search(root,s);
+	       if(t==1) // No need to search in grid as it is prefix of previous words which are in grid
+	       {   res.push_back(s); }
+	       else if(t==-1) // We have already used that word
+	         continue;
+	       else
+	         {   for(auto x:mp[s[0]])
+	              {  bool t=fun(0,x.first,x.second,s,grid,visited);
+	                 if(t==true)
+	                  {  insert(root,s);
+	                     res.push_back(s);
+	                     break;
+	                  }
+	              }
+	         }
+	    }
+	    return res;
+	}
+};
