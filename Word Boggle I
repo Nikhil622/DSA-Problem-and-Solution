@@ -1,0 +1,89 @@
+
+struct Trie{
+    char x;
+    unordered_map<char,Trie*>m;
+    bool isEnd;
+    Trie(char c)
+    {   x=c;
+        isEnd=false;
+    }
+};
+
+void insert(Trie* root,string&s)
+{   Trie* curr=root;
+    for(auto x:s)
+    {  if(curr->m.find(x)==curr->m.end())
+          curr->m[x]=new Trie(x);
+        curr=curr->m[x];
+    }
+    curr->isEnd=true;
+}
+bool search(Trie* root,string &s)
+{   Trie* curr=root;
+    for(auto x:s)
+    {   if(curr->m.find(x)==curr->m.end())
+          return false;
+        else
+          curr=curr->m[x];
+    }
+    return true;
+}
+class Solution{
+public:
+    bool isValid(int i,int j,vector<vector<char>>& grid,vector<vector<bool>>&visited)
+    {   
+        return (i>=0 && i<grid.size() && j>=0 && j<grid[0].size()&&(visited[i][j]==false));
+    }
+    bool fun(int idx,int i,int j,vector<vector<char>>& grid,string &s,vector<vector<bool>>&visited)
+    {   if(idx==s.size() || (idx==s.size()-1 && s[idx]==grid[i][j]))
+           return true;
+        if(s[idx]!=grid[i][j])
+          return false;
+        static int a[]={-1,-1,-1,0,0,1,1,1};
+        static int b[]={-1,0,1,-1,1,-1,0,1};
+        visited[i][j]=true;
+        for(int k=0;k<8;++k)
+        {  if(isValid(i+a[k],j+b[k],grid,visited)==true)
+             {   bool x=fun(idx+1,i+a[k],j+b[k],grid,s,visited);
+                 if(x==true)
+                 {  visited[i][j]=false;
+                    return true;  
+                 }
+             }
+        }
+        visited[i][j]=false;
+        return false;
+    }
+	vector<string> wordBoggle(vector<vector<char> >& grid, vector<string>& dictionary) {
+	    vector<string>res;
+	    int m=grid.size(),n=grid[0].size();
+	    vector<vector<bool>>visited(m,vector<bool>(n,false));
+	    unordered_map<char,vector<pair<int,int>>>Mp;
+	    for(int i=0;i<m;++i)
+	    {
+	        for(int j=0;j<n;++j)
+	          Mp[grid[i][j]].push_back({i,j});
+	    }
+	    Trie* root=new Trie('*');
+	    for(auto &s:dictionary)
+	    {  if(search(root,s)==true)
+	         {  res.push_back(s);
+	            continue;
+	         }
+	       else 
+	       {  if(Mp.find(s[0])==Mp.end())
+	             continue;
+	          for(auto x:Mp[s[0]])
+	            {  bool t=fun(0,x.first,x.second,grid,s,visited);
+	               if(t==true)
+	               {  insert(root,s);
+	                  res.push_back(s);
+	                  break;
+	               }
+	            }
+	       }
+	    }
+	    return res;
+	}
+	
+};
