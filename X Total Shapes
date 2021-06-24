@@ -1,0 +1,36 @@
+class Solution
+{
+    public:
+    //Function to find the number of 'X' total shapes.
+    bool isValid(int i,int j,int m,int n,vector<vector<bool>>&visited)
+     {
+        return (i>=0 && i<m && j>=0 && j<n && visited[i][j]==false);
+     }
+    void DFS(int x,int y,vector<vector<char>>& grid, vector<vector<bool>>& visited)
+    {
+        static int a[]={-1,0,1,0};
+        static int b[]={0,-1,0,1};
+        visited[x][y]=true;
+        int m=grid.size(),n=grid[0].size();
+        for(int k=0;k<4;++k)
+        {  int i=x+a[k],j=y+b[k];
+           if(isValid(i,j,m,n,visited)==true && grid[i][j]=='X')
+              DFS(i,j,grid,visited);
+        }
+    }
+    int xShape(vector<vector<char>>& grid) 
+    {   
+        vector<vector<bool>> visited(grid.size(),vector<bool>(grid[0].size(),false));
+        int res=0;
+        for(int i=0;i<grid.size();++i)
+        {
+            for(int j=0;j<grid[0].size();++j)
+            {   if(visited[i][j]==false && grid[i][j]=='X')
+                  {   ++res;
+                      DFS(i,j,grid,visited);
+                  }
+            }
+        }
+        return res;
+    }
+};
