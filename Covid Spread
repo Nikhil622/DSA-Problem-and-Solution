@@ -1,0 +1,54 @@
+Aterp is the head nurse at a city hospital. City hospital contains R*C number of wards and the structure of a hospital is in the form of a 2-D matrix.
+Given a matrix of dimension R*C where each cell in the matrix can have values 0, 1, or 2 which has the following meaning:
+0: Empty ward
+1: Cells have uninfected patients
+2: Cells have infected patients
+
+An infected patient at ward [i,j] can infect other uninfected patient at indexes [i-1,j], [i+1,j], [i,j-1], [i,j+1] (up, down, left and right) in unit time. Help Aterp determine the minimum units of time after which there won't remain any uninfected patient i.e all patients would be infected. If all patients are not infected after infinite units of time then simply return -1.
+
+https://practice.geeksforgeeks.org/problems/269f61832b146dd5e6d89b4ca18cbd2a2654ebbe/1/?problemStatus=unsolved&page=1&category[]=DFS&category[]=Backtracking&category[]=BFS&query=problemStatusunsolvedpage1category[]DFScategory[]Backtrackingcategory[]BFS#
+ 
+ class Solution {
+public:
+    int helpaterp(vector<vector<int>>&hospital)
+    {   static int a[]={-1,1,0,0};
+        static int b[]={0,0,-1,1};
+        int m=hospital.size(),n=hospital[0].size();
+        vector<vector<int>>res(m,vector<int>(n,INT_MAX));
+        queue<pair<int,int>>q;
+        for(int i=0;i<m;++i)
+        {
+            for(int j=0;j<n;++j)
+            {  if(hospital[i][j]==2)
+                 {   res[i][j]=0;
+                     q.push({i,j});
+                 }
+               else if(hospital[i][j]==0)
+                 res[i][j]=-1;
+            }
+        }
+        while(q.empty()==false)
+        {  auto p=q.front();
+           q.pop();
+           for(int k=0;k<4;++k)
+           {   int x=p.first+a[k],y=p.second+b[k];
+               if(x>=0 && x<m && y>=0 && y<n && (hospital[x][y]==1)&&(res[p.first][p.second]+1<res[x][y]))
+               {  res[x][y]=res[p.first][p.second]+1;
+                  q.push({x,y});
+               }
+           }
+        }
+        int ans=INT_MIN;
+        for(int i=0;i<m;++i)
+        {
+            for(int j=0;j<n;++j)
+            {   if(res[i][j]==-1)
+                   continue;
+                else if(res[i][j]==INT_MAX)
+                    return -1;
+                ans=max(ans,res[i][j]); 
+            }
+        }
+        return ans;
+    }
+};
