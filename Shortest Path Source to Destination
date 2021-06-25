@@ -1,0 +1,27 @@
+class Solution {
+  public:
+    int shortestDistance(int m, int n, vector<vector<int>>&A, int X, int Y) {
+          if(A[0][0]==0)  // m:rows  n:colums
+            return -1;
+          static int a[]={0,0,-1,1};
+          static int b[]={-1,1,0,0};
+          queue<pair<int,int>>q;
+          vector<vector<int>>dist(m,vector<int>(n,INT_MAX));
+          q.push({0,0});
+          dist[0][0]=0;
+          while(q.empty()==false)
+          {  auto p=q.front();
+             q.pop();
+             for(int k=0;k<4;++k)
+             {   int x=p.first+a[k],y=p.second+b[k];
+                 if(x>=0 && x<m && y>=0 && y<n && dist[p.first][p.second]+1<dist[x][y] && A[x][y]==1)
+                   {   dist[x][y]=dist[p.first][p.second]+1;
+                       q.push({x,y});
+                   }
+             }
+          }
+          if(dist[X][Y]==INT_MAX)
+            return -1;
+          return dist[X][Y];
+    }
+};
