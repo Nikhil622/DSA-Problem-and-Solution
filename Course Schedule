@@ -1,0 +1,52 @@
+
+class Solution
+{
+  public:
+    bool isCycle(int s,vector<int>*adj,vector<bool>&visited,vector<bool>&recur)
+    {
+        visited[s]=true;
+        recur[s]=true;
+        for(int x:adj[s])
+        {  if(visited[x]==false)
+             {  if(isCycle(x,adj,visited,recur)==true)
+                     return true;
+             }
+           else if(recur[x]==true)
+                 return true;
+        }
+        recur[s]=false;
+        return false;
+    }
+    void fun(int s,vector<int>*adj,vector<bool>&visited,stack<int>&st)
+     {   visited[s]=true;
+         for(auto x:adj[s])
+          {  if(visited[x]==false)
+                fun(x,adj,visited,st);
+          }
+         st.push(s);
+     }
+    vector<int> findOrder(int n, int m, vector<vector<int>> prerequisites) 
+    {    vector<int> adj[n];
+         for(auto x:prerequisites)
+           adj[x[1]].push_back(x[0]);
+         vector<bool>visited(n,false);
+         vector<bool>recur(n,false);
+         for(int i=0;i<n;++i)
+         {  if(visited[i]==false && isCycle(i,adj,recur,visited)==true)
+               return {};
+         }
+         for(int i=0;i<n;++i)
+           visited[i]=false;
+         stack<int>st;
+         vector<int>res;
+         for(int i=0;i<n;++i)
+         {  if(visited[i]==false)
+               fun(i,adj,visited,st);
+         }
+        while(st.empty()==false)
+        {  res.push_back(st.top());
+           st.pop(); 
+        }
+        return res;
+    }
+};
