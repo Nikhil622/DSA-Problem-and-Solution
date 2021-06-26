@@ -1,0 +1,45 @@
+bool isValid(int i,int j,vector<int>*maze,int n)
+  {
+     return (i<n && j<n && (maze[i][j]>0 ||(i==n-1 && j==n-1))); // Here no need to check for i>=0 && j>=0 because we are moving rightwords or downwords
+  }
+bool fun(int x,int y,vector<int> maze[],int n)
+  {  if(x==n-1 && y==n-1)
+      {  if(maze[x][y]!=0)
+           maze[x][y]=-maze[x][y];
+         else
+           maze[x][y]=-1;
+         return true;
+      }
+     static int a[]={0,1};
+     static int b[]={1,0};
+     for(int k=1;k<=maze[x][y];++k)
+     {  for(int l=0;l<2;++l)
+          {  int i=x+k*a[l],j=y+k*b[l];
+             if(isValid(i,j,maze,n)==true)
+              {  bool t=fun(i,j,maze,n);
+                 if(t==true)
+                  { maze[x][y]=-maze[x][y];
+                    return true;  
+                  }
+              }
+          }
+     }
+     return false;
+  }
+void solve(int n, vector<int> maze[]) 
+{   bool x=fun(0,0,maze,n);
+    if(x==false)
+     {  cout<<"-1"<<endl;
+        return;
+     }
+    for(int i=0;i<n;++i)
+    {
+        for(int j=0;j<n;++j)
+        {  if(maze[i][j]<0)
+              maze[i][j]=1;
+           else
+             maze[i][j]=0;
+        }
+    }
+    print(n,maze);
+}
