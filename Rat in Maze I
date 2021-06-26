@@ -1,0 +1,39 @@
+class Solution{
+    unordered_map<string,char>mp;
+    public:
+    bool isValid(int x,int y,vector<vector<bool>>&visited)
+    {   int n=visited.size(); // n*n size matrix
+       return (x>=0 && x<n && y>=0 && y<n && visited[x][y]==false);
+    }
+    void fun(int x,int y,string &s,vector<vector<int>>&grid,vector<vector<bool>>&visited,vector<string>&res)
+    {  if(x==(grid.size()-1) && (y==grid.size()-1)) 
+        {  res.push_back(s);   // Here rat will reach to the right corner and will
+           return; 
+        }
+       static int a[]={1,0,0,-1};
+       static int b[]={0,-1,1,0};
+       visited[x][y]=true;
+       for(int k=0;k<4;++k)
+        {  int i=x+a[k],j=y+b[k];
+            if(isValid(i,j,visited)==true && grid[i][j]==1)
+            {  s.push_back(mp[(to_string(a[k])+to_string(b[k]))]);
+               fun(i,j,s,grid,visited,res);
+               s.pop_back();
+            }
+        }
+       visited[x][y]=false;
+    }
+    vector<string> findPath(vector<vector<int>>&grid, int n) {
+       if(grid[n-1][n-1]==0 || grid[0][0]==0)
+         return {"-1"};
+       this->mp[(to_string(0)+to_string(-1))]='L'; // Direction setting
+       this->mp[(to_string(0)+to_string(1))]='R';
+       this->mp[(to_string(-1)+to_string(0))]='U';
+       this->mp[(to_string(1)+to_string(0))]='D';
+       vector<vector<bool>>visited(n,vector<bool>(n,false));
+       vector<string>res;
+       string s="";
+       fun(0,0,s,grid,visited,res);
+       return res;
+    } 
+};
