@@ -1,0 +1,78 @@
+// class Solution {
+//     unordered_map<int,vector<pair<int,int>>>mp;
+// public:
+//  bool isValid(int i,int j,vector<vector<int>>&grid)
+//   {
+//       return (i>=0 && i<grid.size() && j>=0 && j<grid.size());
+//   }
+//  void fun(int x,int y,int curr_sum,int &max_sum,int &total_path,vector<vector<int>>&grid)
+//   {   if(x==grid.size()-1 && y==grid.size()-1)
+//       {   ++total_path;
+//           total_path=(total_path%1000000007);
+//           if(max_sum<curr_sum)
+//              max_sum=curr_sum;
+//           return;
+//       }
+//       for(auto p:mp[grid[x][y]])
+//       {  int i=x+p.first,j=y+p.second;
+//          if(isValid(i,j,grid)==true ){
+//             fun(i,j,curr_sum+grid[i][j],max_sum,total_path,grid);
+//          }
+//       }
+//   }
+//  vector<int> FindWays(vector<vector<int>>&grid){
+//     int max_sum=INT_MIN,n=grid.size();
+//     int total_path=0;
+//     this->mp[1].push_back({0,1});
+//     this->mp[2].push_back({1,0});
+//     this->mp[3].push_back({0,1});
+//     this->mp[3].push_back({1,0});
+//     vector<vector<int>>t(n>(n,-1}));
+//     fun(0,0,grid[0][0],max_sum,total_path,grid,t);
+//     if(total_path==0)
+//       return {0,0};
+//     return {total_path,max_sum};
+//  }
+// };
+
+class Solution {
+    public:
+    vector<int> FindWays(vector<vector<int>>&grid){
+        int n=grid.size();
+        vector<vector<pair<int,int>>>t(n,vector<pair<int,int>>(n,{0,0})); // {total_path, max_sum}
+        t[0][0].first=1;
+        t[0][0].second=grid[0][0];
+        for(int i=1;i<n;++i)
+           {  if((grid[i-1][0]==2 || grid[i-1][0]==3) && t[i-1][0].first>0)
+                {  t[i][0].first=1;
+                   t[i][0].second=t[i-1][0].second+grid[i][0];
+                }
+           }
+        for(int j=1;j<n;++j)
+           {  if((grid[0][j-1]==1 || grid[0][j-1]==3) && t[0][j-1].first>0)
+                {  t[0][j].first=1;
+                   t[0][j].second=t[0][j-1].second+grid[0][j];
+                }
+           }
+        
+        for(int i=1;i<n;++i)
+        {  for(int j=1;j<n;++j)
+             {   bool x=true;
+                 if((grid[i-1][j]==2 || grid[i-1][j]==3) && t[i-1][j].first>0)
+                  {  x=false;
+                     t[i][j].first=t[i][j].first+t[i-1][j].first;
+                     t[i][j].second=max(t[i][j].second,t[i-1][j].second+grid[i][j]); 
+                  }
+                 if((grid[i][j-1]==1 || grid[i][j-1]==3) && t[i][j-1].first>0)
+                  {  x=false;
+                     t[i][j].first=t[i][j].first+t[i][j-1].first;
+                     t[i][j].second=max(t[i][j].second,t[i][j-1].second+grid[i][j]); 
+                  }
+                 if(x==true)
+                   continue;
+                t[i][j].first=(t[i][j].first%1000000007);
+             }
+        }
+        return {t[n-1][n-1].first,t[n-1][n-1].second};
+    }
+};
