@@ -1,0 +1,18 @@
+class Solution
+{
+    public:
+    void fun(Node*root,Node* &res)
+     {  if(root==NULL)
+           return;
+        Node* x=root->left, *y=root->right;
+        res->right=root;
+        res->left=NULL;
+        res=res->right;
+        fun(x,res);
+        fun(y,res);
+     }
+    void flatten(Node* &root)
+    {   Node* res=newNode(-1);
+        fun(root,res);
+    }
+};
