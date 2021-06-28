@@ -1,0 +1,24 @@
+class Solution 
+{
+    public:
+    //Function to find the minimum number of swaps required to sort the array. 
+	int minSwaps(vector<int>&v)
+	{   int n=v.size();
+	    vector<int>vt=v;
+	    sort(vt.begin(),vt.end());
+	    unordered_map<int,int>mp;
+	    for(int i=0;i<n;++i)
+	       mp[vt[i]]=i;
+	    vector<bool>visited(n,false);
+	    int res=0;
+	    for(int i=0;i<n;++i)
+	    {  int sum=0,x=i;
+	       while(mp[v[x]]!=x)
+	        {  ++sum;
+	           swap(v[x],v[mp[v[x]]]);  // swap element at position to its correct position : v[x] should be at m[v[x]]
+	        }
+	       res+=sum;
+	    }
+	    return res;
+	}
+};
