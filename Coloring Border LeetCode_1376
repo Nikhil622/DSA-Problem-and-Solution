@@ -1,0 +1,47 @@
+class Solution {
+public:
+    bool isValid(int i,int j,vector<vector<bool>>&visited)
+    {
+       return (i>=0 && i<visited.size() && j>=0 && j<visited[0].size() && visited[i][j]==false);
+    }
+    void fun(int x,int y,int color,vector<vector<int>>&grid,vector<vector<bool>>&visited)
+    {
+        static int a[]={-1,1,0,0};
+        static int b[]={0,0,-1,1};
+        visited[x][y]=true;
+        for(int k=0;k<4;++k)
+        {   int i=x+a[k],j=y+b[k];
+            if(i>=0 && i<visited.size() && j>=0 && j<visited[0].size())
+            {  if(grid[i][j]==INT_MAX) // Means: In that direction color is was same and now it is updated
+                  continue;
+               if(grid[i][j]!=color)  // Means: In that direction color of adjacent cell is different so it will be boundry of component
+                { grid[x][y]=INT_MAX;
+                  break;
+                }
+            }
+           else // Means: It is connected to boundry of grid
+           {  grid[x][y]=INT_MAX;
+                break;
+           } 
+        }
+        for(int k=0;k<4;++k)
+        {   int i=x+a[k],j=y+b[k];
+            if(isValid(i,j,visited)==true && grid[i][j]==color)
+               fun(i,j,color,grid,visited); 
+        }
+    }
+    vector<vector<int>> colorBorder(vector<vector<int>>& grid, int r0, int c0, int new_color) {
+        int color=grid[r0][c0];
+        int m=grid.size(),n=grid[0].size();
+        vector<vector<bool>>visited(m,vector<bool>(n,false));
+        fun(r0,c0,color,grid,visited);
+        for(int i=0;i<m;++i)
+        {
+            for(int j=0;j<n;++j)
+            {  if(grid[i][j]==INT_MAX)
+                  grid[i][j]=new_color;
+            }
+        }
+        return grid;
+    }
+};
