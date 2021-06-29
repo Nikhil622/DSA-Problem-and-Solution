@@ -1,0 +1,49 @@
+class Solution
+{
+	public:
+    //Function to find if the given edge is a bridge in graph.
+    void fun(int s,vector<bool>&visited,vector<int>*adj)
+    {
+        visited[s]=true;
+        for(int x:adj[s])
+        {  if(visited[x]==false)
+             fun(x,visited,adj);
+        }
+    }
+    int isBridge(int V, vector<int> adj[], int c, int d) 
+    {   int total1=0;
+        vector<bool>visited(V,false);
+        for(int i=0;i<V;++i)
+        {
+            if(visited[i]==false)
+            {   ++total1;
+                fun(i,visited,adj); 
+            }
+        } // Total1: total connected components before removing edge c-d
+        for(int i=0;i<adj[c].size();++i) // Removind edge c-d
+        {  if(adj[c][i]==d)
+            {  swap(adj[c][i],adj[c][adj[c].size()-1]);
+               adj[c].pop_back();
+               break;
+            }
+        }
+        for(int i=0;i<adj[d].size();++i) // Removing edge d-c
+        {  if(adj[d][i]==c)
+            {  swap(adj[d][i],adj[d][adj[d].size()-1]);
+               adj[d].pop_back();
+               break;
+            }
+        }   // Undirected edge c-d removed here by above two loops
+        int total2=0;
+        for(int i=0;i<V;++i)
+          visited[i]=false;
+        for(int i=0;i<V;++i)
+        {
+            if(visited[i]==false)
+            {   ++total2;
+                fun(i,visited,adj); 
+            }
+        }   // Total_2: total connected components after removing edge c-d
+        return total1<total2;
+    }
+};
