@@ -1,0 +1,37 @@
+class Solution{
+  public:
+    static bool comp(int x,int y)
+    {
+        return x>y;
+    }
+    bool fun(int sum,int *a,vector<bool>&visited,int n)
+     {   if(sum==0)
+           return true;
+         for(int i=0;i<n;++i)
+          {  if(visited[i]==false && a[i]<=sum)
+              {  visited[i]=true;
+                 bool x=fun(sum-a[i],a,visited,n);
+                 if(x==true)
+                   return true; 
+                 visited[i]=false;
+              }
+          }
+        return false;
+     }
+    bool isKPartitionPossible(int a[], int n, int k)
+    {  int sum=0;
+        for(int i=0;i<n;++i)
+          sum+=a[i];
+        if((sum%k)!=0)
+         return false;
+       int avg=(sum/k);
+       sort(a,a+n,comp); // Reverse sorted array because larger elment should make their subset first
+       vector<bool>visited(n,false);
+       for(int i=0;i<k;++i) // for k time we should get true val 
+       {  bool x=fun(avg,a,visited,n);
+          if(x==false)
+            return false;
+       }
+       return true;
+    }
+};
