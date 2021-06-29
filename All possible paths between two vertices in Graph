@@ -1,0 +1,22 @@
+class Solution 
+{
+    public:
+    void fun(int s,int &res,int e,vector<bool>&visited,vector<int>*adj)  // Backtracking
+     {  if(s==e)
+         {  ++res;
+             return;
+         }
+        visited[s]=true;
+        for(int x:adj[s])
+        {  if(visited[x]==false)
+              fun(x,res,e,visited,adj);
+        }
+        visited[s]=false;
+     }
+	int countPaths(int V, vector<int> adj[], int source, int destination)
+	{   int res=0;
+	   vector<bool>visited(V,false);
+	   fun(source,res,destination,visited,adj);
+	   return res;
+	}
+};
