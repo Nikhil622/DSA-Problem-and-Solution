@@ -1,0 +1,55 @@
+void DFS(string s,string &target,vector<string>&vt,vector<vector<string>>&res,unordered_map<string,vector<string>>&adj)
+   {   if(s==target)
+        {  res.push_back(vt);
+           return;  
+        }
+       for(auto &x:adj[s])
+       {  vt.push_back(x);
+          DFS(x,target,vt,res,adj);
+          vt.pop_back(); 
+       }
+   }
+class Solution {
+    public:
+    vector<vector<string>> findSequences(string beginWord, string endWord, vector<string>& wordList){
+        // make adjacency list of string->string  : make those string adjacent to curr_string which whose dist is greator than curr_string or not discored till now
+        unordered_set<string>s;
+        unordered_map<string,int>mp;
+        unordered_map<string,vector<string>>adj;
+        for(auto &str:wordList)
+           s.insert(str);
+        queue<string>q;
+        q.push(beginWord);
+        mp[beginWord]=0;
+        bool x=false;
+        while(q.empty()==false) 
+        {  auto word=q.front(),curr_word=q.front();
+           q.pop();
+           for(int pos=0;pos<word.size();++pos)
+           {  char curr_char=word[pos];
+              for(char ch='a';ch<='z';++ch)
+               {  word[pos]=ch;
+                  if(s.find(word)==s.end())
+                     continue;
+                  if(word==endWord)
+                  { x=true;}
+                  if(mp.find(word)==mp.end())
+                   { adj[curr_word].push_back(word);
+                     mp[word]=mp[curr_word]+1;
+                     q.push(word);
+                   }
+                  else if(mp[curr_word]<mp[word])
+                  {  adj[curr_word].push_back(word); }
+               }
+              word[pos]=curr_char;
+           }
+        }
+        if(x==false)
+          return {};
+        vector<string>vt;
+        vt.push_back(beginWord);
+        vector<vector<string>>res;
+        DFS(beginWord,endWord,vt,res,adj);
+        return res;
+    }
+};
