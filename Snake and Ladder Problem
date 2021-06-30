@@ -1,0 +1,27 @@
+class Solution{
+public:
+    int minThrow(int N, int arr[]){
+        int dist[30];
+        for(int i=0;i<30;++i)
+          dist[i]=INT_MAX;
+        dist[0]=0;
+        unordered_map<int,int>ladder;
+        for(int i=0;i<N;++i)
+        {  if(arr[2*i]<arr[2*i+1])// Means this is ladder
+             ladder[arr[2*i]-1]=arr[2*i+1]-1;
+           else //if(arr[i]>arr[i+1]) // It will be snake 
+             dist[arr[2*i]-1]=-1; // Cell in which there is Mouth of snake they cannot be visited
+        }
+        for(int i=0;i<30;++i)
+        {  if(dist[i]!=-1)     // dist[i]==-1 :These are the cell where snakes mouth is present
+            {   if(ladder.find(i)!=ladder.end())
+                    dist[ladder[i]]=min(dist[ladder[i]],dist[i]);
+                for(int k=1;(k<=6)&&((i+k)<30);++k)
+                {  if(dist[i+k]!=-1)
+                      dist[i+k]=min(dist[i+k],1+dist[i]); 
+                }
+            }
+        }
+        return dist[29];
+    }
+};
