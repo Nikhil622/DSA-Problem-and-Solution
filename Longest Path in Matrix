@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool isValid(int i,int j,vector<vector<int>>&grid)
+     {
+       return (i>=0 && i<grid.size() && j>=0 && j<grid[0].size());
+     }
+    int fun(int i,int j,vector<vector<int>>&t,vector<vector<int>>&grid)
+     {   if(t[i][j]!=-1)
+             return t[i][j];
+         static int a[]={-1,1,0,0};
+         static int b[]={0,0,-1,1};
+         t[i][j]=1;
+         for(int k=0;k<4;++k)
+         {   int x=i+a[k],y=j+b[k];
+             if(isValid(x,y,grid)==true && (grid[i][j]<grid[x][y]))
+                  t[i][j]=max(t[i][j],1+fun(x,y,t,grid));
+         }
+         return t[i][j];
+     }
+    int longestIncreasingPath(vector<vector<int>>& grid) {
+        int m=grid.size(),n=grid[0].size();
+        vector<vector<int>>t(m,vector<int>(n,-1));
+        int res=1;
+        for(int i=0;i<m;++i)
+        {  for(int j=0;j<n;++j)
+             res=max(res,fun(i,j,t,grid));
+        }
+       return res;
+    }
+};
