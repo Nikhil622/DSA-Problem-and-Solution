@@ -1,0 +1,51 @@
+class Solution{
+public:
+    bool isValid(int i,int j,vector<vector<char>>&mat)
+      {
+          return (i>=0 && i<mat.size()&& j>=0 && j<mat[0].size());
+      }
+    void fun(int x,int y,bool &isTrue,int color,vector<vector<char>>&mat,vector<vector<int>>&grid)
+      {   
+          static int a[]={-1,1,0,0};
+          static int b[]={0,0,-1,1};
+          for(int k=0;k<4;++k)
+           {   int i=x+a[k],j=y+b[k];
+               if(isValid(i,j,mat)==false) // Cell (x,y) is touching boundry of grid : If condition is valid
+                  isTrue=false;
+           }
+          mat[x][y]='a'; // Changing element in (x,y) cell because fun should not revisit that cell again
+          grid[x][y]=color;
+          for(int k=0;k<4;++k)
+           {   int i=x+a[k],j=y+b[k];
+               if(isValid(i,j,mat)==true && mat[i][j]=='O')
+                  fun(i,j,isTrue,color,mat,grid);
+           }
+      }
+    vector<vector<char>> fill(int n, int m, vector<vector<char>>&mat)
+    {   unordered_map<int,bool>mp; // mp stores: weather a O's Island is surrounded by all X or not : Here we are coloring differend O's Island by different colors
+        int color=1;
+        vector<vector<int>>grid(n,vector<int>(m,-1)); // We will mark group of O's (Island of O's) with a specific color in grid .
+        for(int i=0;i<n;++i)                          // And wiil check if that Island is touch with boundry of matrix or not : Using isTrue variable
+         {
+             for(int j=0;j<m;++j)
+             {  if(mat[i][j]=='O')
+                  {   bool isTrue=true;
+                      fun(i,j,isTrue,color,mat,grid); //isTrue : True means O's Island is surrounded by X (Means : any O cell in that Island is not touching mat boundry)
+                      mp[color++]=isTrue;            // group of O's is surrounded by X
+                  }
+             }
+         }
+        for(int i=0;i<n;++i)
+        {
+            for(int j=0;j<m;++j)
+            {  if(mat[i][j]=='a')
+                 {  if(mp[grid[i][j]]==true)
+                      mat[i][j]='X';
+                    else
+                      mat[i][j]='O';
+                 }
+            }
+        }
+        return mat;
+    }
+};
