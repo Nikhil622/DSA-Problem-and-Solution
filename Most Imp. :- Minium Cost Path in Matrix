@@ -1,0 +1,86 @@
+// class Solution // This BackTracking solution works for small values of n : It considers all path (0,0) to (n-1,n-1)
+// {
+//     public:
+//     bool isValid(int i,int j,int n,vector<vector<bool>>&visited)
+//      {
+//          return (i>=0 && i<n && j>=0 && j<n && visited[i][j]==false);
+//      }
+//     void fun(int x,int y,int curr_sum,int&res,vector<vector<int>>&grid,vector<vector<bool>>&visited)
+//      {  if(x==grid.size()-1 && y==grid.size()-1)
+//          {  res=min(res,curr_sum);
+//             return;   
+//          }
+//          static int a[]={-1,1,0,0};
+//          static int b[]={0,0,-1,1};
+//          visited[x][y]=true;
+//          for(int k=0;k<4;++k)
+//          {  int i=x+a[k],j=y+b[k];
+//             if(isValid(i,j,grid.size(),visited)==true &&(curr_sum+grid[i][j]<=res))
+//                 fun(i,j,curr_sum+grid[i][j],res,grid,visited);
+//          }
+//          visited[x][y]=false;
+//      }
+//     int minimumCostPath(vector<vector<int>>& grid) 
+//     {   int n=grid.size();
+//         vector<vector<bool>>visited(n,vector<bool>(n,false));
+//         int curr_sum=grid[0][0],res=INT_MAX;
+//         fun(0,0,curr_sum,res,grid,visited);
+//         return res;
+//     }
+// };
+
+
+// Dijkstra Algorithm in Matrix
+struct cell{
+    int x,y,dist;
+    cell(int i,int j,int d){
+       x=i;
+       y=j;
+       dist=d;
+    };
+};
+
+bool operator< (const cell&a,const cell&b) // For comparing cells in set
+       {   if(a.dist==b.dist)
+            {   if(a.x==b.x)
+                   return a.y<b.y;
+                else
+                  return a.x<b.x;
+            }
+           return a.dist<b.dist;
+       }
+       
+class Solution // This BackTracking solution works for small values of n
+{
+    public:
+    bool isValid(int i,int j,vector<vector<int>>& grid) // square grid
+     {
+         return (i>=0 && i<grid.size() && j>=0 && j<grid.size());
+     }
+    int minimumCostPath(vector<vector<int>>& grid) 
+        {   
+            static int a[]={-1,1,0,0};
+            static int b[]={0,0,-1,1};
+            
+            int n=grid.size();
+            vector<vector<int>>dist(n,vector<int>(n,INT_MAX));
+            dist[0][0]=grid[0][0];
+            set<cell>s;
+            s.insert(cell(0,0,0));
+            while(s.empty()==false)
+            {   cell C=*s.begin();
+                s.erase(s.begin());
+                for(int k=0;k<4;++k)
+                {  int i=C.x+a[k],j=C.y+b[k];
+                   if(isValid(i,j,grid)==true && dist[C.x][C.y]+grid[i][j]<dist[i][j])
+                     {   
+                         if(dist[i][j]!=INT_MAX)
+                             s.erase(cell(i,j,dist[i][j]));
+                         dist[i][j]=dist[C.x][C.y]+grid[i][j];
+                         s.insert(cell(i,j,dist[C.x][C.y]+grid[i][j]));
+                     }
+                }
+            }
+          return dist[n-1][n-1];
+        }
+};
