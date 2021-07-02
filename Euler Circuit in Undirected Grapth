@@ -1,0 +1,35 @@
+class Solution{
+public:
+    bool fun(int s,int l,vector<bool>&visited,vector<int>*adj,int n)
+      {  if(l==n)
+           {  return true; }
+         visited[s]=true;
+         for(int x:adj[s])
+         {  if(visited[x]==false)
+              {  if(fun(x,l+1,visited,adj,n)==true); 
+                    return true;
+              }
+         }
+         visited[s]=false;
+         return false;
+      }
+	bool isEularCircuitExist(int V, vector<int>adj[]){
+	    if(V==1)
+	      return true;
+	    vector<bool>visited(V,false);
+	    int l=0,k=0;
+	    for(int i=0;i<V;++i)
+	    {   if(adj[i].size()==0)
+	         {  ++k;
+	            continue; 
+	         }
+	        if(adj[i].size()!=2) // from every vertex there should only two edges passing : 1 inEdge and 1 outEdge
+	         return false;
+	    }
+	    if(k==V)
+	      return true;
+	    if(fun(0,l,visited,adj,V-k)==true) // we are neglecting : Edgeless node : Therefore V-k
+	          return true;  // Here assumption : O is never edgeless node : Or else we will have to find any node with edges
+	    return false;
+	}
+};
