@@ -1,0 +1,41 @@
+class Solution{
+  public:
+    void diagonalSort(vector<vector<int> >& matrix, int m, int n) {
+       for(int i=1;i<n-1;++i)
+       {  int x=0,y=i;
+          vector<int>v;
+          while(x<m && y<n)
+           {  v.push_back(matrix[x][y]);
+              x=x+1;
+              y=y+1;  
+           }
+          sort(v.begin(),v.end(),greater<int>());
+          x=0;
+          y=i;
+          int k=0;
+          while(x<m && y<n)
+           {  matrix[x][y]=v[k++];
+              x=x+1;
+              y=y+1;
+           }
+       }
+       for(int i=1;i<m-1;++i)
+       { int x=i,y=0;
+         vector<int>v;
+          while(x<m && y<n)
+           {  v.push_back(matrix[x][y]);
+              x=x+1;
+              y=y+1;  
+           }
+         sort(v.begin(),v.end());
+          x=i;
+          y=0;
+          int k=0;
+          while(x<m && y<n)
+           {  matrix[x][y]=v[k++];
+              x=x+1;
+              y=y+1;
+           }
+       }
+    }
+};
