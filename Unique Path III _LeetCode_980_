@@ -1,0 +1,44 @@
+class Solution {
+public:
+    bool isValid(int i,int j,vector<vector<bool>>&visited)
+    {
+        return (i>=0 && i<visited.size() && j>=0 && j<visited[0].size() && visited[i][j]==false);
+    }
+    void fun(int x,int y,pair<int,int>&target,int &res,int zeros,vector<vector<int>>& grid,vector<vector<bool>>&visited)
+    {   if(x==target.first && y==target.second)
+        { if(zeros==0) // It should have travelled all zeros in the grid. We only had to find those path in the grid.
+            ++res;
+           return;
+        }
+       static int a[]={0,0,-1,1};
+       static int b[]={-1,1,0,0};
+       visited[x][y]=true;
+       zeros=zeros-1;
+       for(int k=0;k<4;++k)
+       {  int i=x+a[k],j=y+b[k];
+          if(isValid(i,j,visited)==true && grid[i][j]!=-1)
+          {   
+              fun(i,j,target,res,zeros,grid,visited);
+          }
+       }
+       visited[x][y]=false;
+    }
+    int uniquePathsIII(vector<vector<int>>& grid) {
+        int m=grid.size(),n=grid[0].size();
+        vector<vector<bool>>visited(m,vector<bool>(n,false));
+        int res=0,zeros=0;
+        pair<int,int> start,end;
+        for(int i=0;i<m;++i)
+        {  for(int j=0;j<n;++j)
+            {  if(grid[i][j]==1)
+                start={i,j};
+               else if(grid[i][j]==2)
+                  end={i,j};
+               else if(grid[i][j]==0)
+                   zeros++;
+            }
+        }
+        fun(start.first,start.second,end,res,zeros+1,grid,visited);
+        return res;
+    }
+};
