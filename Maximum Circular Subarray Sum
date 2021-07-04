@@ -1,0 +1,17 @@
+class Solution{
+    public:
+    int circularSubarraySum(int a[], int n){
+       int curr_max_sum=a[0],curr_min_sum=a[0];
+       int res=a[0],res2=a[0],sum=a[0];
+       for(int i=1;i<n;++i)
+       {  sum+=a[i];
+          curr_max_sum=max(curr_max_sum+a[i],a[i]);
+          curr_min_sum=min(curr_min_sum+a[i],a[i]);
+          res=max(res,curr_max_sum);
+          res2=min(res2,curr_min_sum);
+       }
+       if(sum==res2)
+         return res;
+       return max(res,sum-res2);
+    }
+};
