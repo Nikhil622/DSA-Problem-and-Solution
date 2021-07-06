@@ -1,0 +1,44 @@
+struct Trie{
+    Trie* child[2];
+    Trie()
+    {  child[0]=NULL;
+       child[1]=NULL;
+    }
+};
+
+void insert(Trie* root,vector<int>&v)
+ {   Trie* curr=root;
+     for(auto x:v)
+     {  if(curr->child[x]==NULL)
+           curr->child[x]=new Trie();
+        curr=curr->child[x];
+     }
+ }
+bool find(Trie* root,vector<int>&v)
+ {  Trie* curr=root;
+    for(auto x:v)
+    {  if(curr->child[x]==NULL)
+           return false;
+       curr=curr->child[x];
+    }
+    return true;
+ }
+class Solution
+{   
+public:
+vector<int> repeatedRows(vector<vector<int>> matrix, int M, int N) 
+{   vector<int> res;
+    Trie* root=new Trie();
+    insert(root,matrix[0]);
+    for(int i=1;i<M;++i)
+    {  if(find(root,matrix[i])==true)
+         {  res.push_back(i);
+            continue; 
+         }
+       else{
+          insert(root,matrix[i]);
+       }
+    }
+    return res;
+} 
+};
