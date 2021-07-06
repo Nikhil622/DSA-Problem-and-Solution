@@ -1,0 +1,30 @@
+class Solution {
+public:
+int MaxGold(vector<vector<int>>&grid){
+      int m=grid.size(),n=grid[0].size();
+      vector<vector<int>> t(m,vector<int>(n,-1));
+      for(int i=0;i<n;++i)
+        t[0][i]=grid[0][i];
+      static int b[]={-1,0,1};
+      for(int i=1;i<m;++i)
+      {
+          for(int j=0;j<n;++j)
+          {  if(grid[i][j]!=-1)
+               {   for(int k=0;k<3;++k)
+                    {  int x=i-1,y=j+b[k];
+                       if(x>=0 && x<m && y>=0 && y<n && t[x][y]!=-1)
+                        {  
+                            t[i][j]=max(t[i][j],t[x][y]+grid[i][j]);
+                        }
+                    }
+               }
+          }
+      }
+      int res=0;
+      for(int i=0;i<m;++i)
+      { for(int j=0;j<n;++j)
+          res=max(res,t[i][j]);
+      }
+     return res;
+}
+};
