@@ -1,0 +1,51 @@
+class Solution{
+  public:
+    void fun(int idx,int dots,int prev_idx,string &x,string &s,vector<string>&res)
+     {   if(dots==0)
+         {  if(s.size()-1 - prev_idx >3)
+              return;
+            if(idx<s.size()-1 && s[idx]=='0')
+                return;
+            int curr=x.size();
+            string temp="";
+            for(int j=prev_idx+1;j<s.size();++j)
+              temp+=s[j];
+            if(stoi(temp)>255)
+               return;
+            x+=temp;
+            res.push_back(x);
+            while(curr<x.size()) // We want to restore the origiginal state of string x  (when it was called by its caller function)  as we are returning to its caller
+              x.pop_back();
+            return;  
+         }
+         int curr_size=x.size();
+         for(int i=idx;i<s.size()-1;++i)// We cannot place dot after last element
+         {  if(i-prev_idx>3) // numbers between two dots should not be more than 3
+              break;
+            string temp="";
+            for(int j=prev_idx+1;j<=i;++j)
+              temp+=s[j];
+            if(stoi(temp)>255) // value of string in between two dots sould be less than 255
+               break;
+            x.push_back(s[i]);
+            x.push_back('.');
+            fun(i+1,dots-1,i,x,s,res);
+            x.pop_back();
+            if(s[i]=='0' && prev_idx==(i-1)) // 23.04 is not valid
+                 break; 
+         }
+         while(curr_size<x.size()) // We want to restore the origiginal state of string x  (when it was called by its caller function)  as we are returning to its caller
+            x.pop_back();
+     }
+    vector<string> genIp(string &s) {
+        if(s.size()>12)
+          return {};
+        string x="";
+        vector<string>res;
+        int dots=3;
+        int prev_idx=-1;
+        fun(0,dots,-1,x,s,res);
+        return res;
+    }
+
+};
