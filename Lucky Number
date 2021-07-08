@@ -1,0 +1,10 @@
+class Solution{
+public:
+    bool isLucky(int n,int x=2) {
+         if(n%x==0)
+           return false;
+         if(n<x)
+            return true;
+         return isLucky(n-n/x,x+1); // n-n/x  is updated relative position from first element
+    }
+};
