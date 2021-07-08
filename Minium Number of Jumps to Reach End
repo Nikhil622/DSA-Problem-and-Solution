@@ -1,0 +1,38 @@
+class Solution{
+  public:
+    // int minJumps(int arr[], int n){  Time Complexity : O(n^2)  Space Complexity: O(n)
+    //      if(arr[0]==0)
+    //         return -1;
+    //     vector<int>dist(n,INT_MAX);
+    //     dist[0]=0;
+    //     for(int i=0;i<n-1;++i)
+    //     {   if(arr[i]==0)
+    //           continue;
+    //         for(int j=1;((i+j)<n&&j<=arr[i]);++j)
+    //           dist[i+j]=min(dist[i+j],1+dist[i]);
+    //         if(dist[n-1]!=INT_MAX)
+    //           return dist[n-1];
+    //     }
+    //     if(dist[n-1]==INT_MAX)
+    //       return -1;
+    //     return dist[n-1];
+    // }
+    int minJumps(int arr[], int n){
+         if(arr[0]==0)
+           return -1;
+         int max_reach=arr[0],jump=1,step=arr[0];
+         for(int i=1;i<n;++i)
+         {  if(i==n-1)
+              return jump;
+            max_reach=max(max_reach,i+arr[i]);
+            step=step-1;
+            if(step==0)
+            {  ++jump;
+               if(max_reach<=i)
+                 return -1;
+               step=max_reach-i;
+            }
+         }
+         return -1;
+    }
+};
