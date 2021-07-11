@@ -1,0 +1,51 @@
+class Solution{ 
+    public:
+    // int longestUniqueSubsttr(string &s){ // This also has the same complexity : But taking longer time
+    //     unordered_set<char>m;
+    //     queue<char>q;
+    //     q.push(s[0]);
+    //     m.insert(s[0]);
+    //     int res=1;
+    //     for(int i=1;i<s.size();++i)
+    //     {  if(m.find(s[i])!=m.end())
+    //         {  res=max(res,(int)m.size());
+    //           while(q.front()!=s[i])
+    //           {  m.erase(q.front());
+    //               q.pop();
+    //           }
+    //           q.pop();
+    //           q.push(s[i]);
+    //         }
+    //         else
+    //         {  m.insert(s[i]);
+    //           q.push(s[i]); 
+    //         }
+    //     }
+    //     res=max(res,(int)m.size());
+    //     return res;
+    // }
+    int longestUniqueSubsttr(string &s){
+        // all char in string s are small alphabet;
+        vector<int> v(26,-1);
+        int res=1;
+        v[s[0]-'a']=0;
+        int r=1;
+        int l=0;// first element of non repeating substring
+        while(r<s.size())
+        { if(v[s[r]-'a']!=-1)
+           {   res=max(res,r-l);
+               if(res==26)
+                 return res;
+               for(int i=l;i<v[s[r]-'a'];++i) // removing all the character from begin to (v[s[r]-'a']-1) index
+                   v[s[i]-'a']=-1;
+              l=v[s[r]-'a']+1; // setting new begining of substring : l=v[s[r]-'a']+1
+              v[s[r]-'a']=r;  // changing the index of the repeating character
+           }
+           else
+             v[s[r]-'a']=r;
+           ++r;
+        }
+        res=max(res,(int)s.size()-l);
+        return res;
+    }
+};
