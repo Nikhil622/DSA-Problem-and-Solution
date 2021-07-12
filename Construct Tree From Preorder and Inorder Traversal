@@ -1,0 +1,36 @@
+// void inOrder(Node* root)
+// {  if(root==NULL)
+//       return;
+//   inOrder(root->left);
+//   cout<<root->data<<" ";
+//   inOrder(root->right);
+// }
+
+// void preOrder(Node* root)
+// {  if(root==NULL)
+//       return;
+//   cout<<root->data<<" ";
+//   preOrder(root->left);
+//   preOrder(root->right);
+// }
+
+class Solution{
+    public:
+    void fun(int &idx,Node* &root,int *pre,int *in,int n,int l,int r,unordered_map<int,int>&m)
+     {   if(idx==n || r<l)
+            return;
+         int pos=idx;
+         root=new Node(pre[idx++]);
+         fun(idx,root->left,pre,in,n,l,m[pre[pos]]-1,m);
+         fun(idx,root->right,pre,in,n,m[pre[pos]]+1,r,m);
+     }
+    Node* buildTree(int in[],int pre[], int n)
+    {  Node* root=NULL;
+       unordered_map<int,int>m;
+       for(int i=0;i<n;++i)
+         m[in[i]]=i;
+       int idx=0;
+       fun(idx,root,pre,in,n,0,n-1,m);
+       return root;
+    }
+};
