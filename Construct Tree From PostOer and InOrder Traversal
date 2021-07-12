@@ -1,0 +1,18 @@
+void fun(int &idx,Node* &root,int *in,int *post,int l,int r,unordered_map<int,int>&m)
+  {   if(idx<0 || r<l)
+        return;
+      int pos=idx--;
+      root= new Node(post[pos]);
+      fun(idx,root->right,in,post,m[post[pos]]+1,r,m);
+      fun(idx,root->left,in,post,l,m[post[pos]]-1,m);
+  }
+Node *buildTree(int in[], int post[], int n) {
+     unordered_map<int,int>m;
+     for(int i=0;i<n;++i)
+       m[in[i]]=i;
+     Node* root=NULL;
+     int idx=n-1;
+     fun(idx,root,in,post,0,n-1,m);
+     return root;
+}
+
