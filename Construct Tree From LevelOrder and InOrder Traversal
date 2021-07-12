@@ -1,0 +1,27 @@
+Node* buildTree(int in[], int levelOrder[], int iStart, int iEnd,int n)
+{   unordered_map<int,int>m;
+    for(int i=0;i<n;++i)
+      m[in[i]]=i;
+    Node* root=new Node(levelOrder[0]);
+    queue<pair<Node*,pair<int,int>>>q; //  pair<int,int> : Range of indexe :  p.first<= index_OF_Element <= p.second
+    q.push({root,{0,n-1}});  //  ex.  
+    for(int i=1;i<n;++i)    // levelOrder[0]   : element is present in the range 0 to n-1;
+    {  bool x=false;
+       while(x==false)
+       {  if(q.front().first->left==NULL && (q.front().second.first<=m[levelOrder[i]] && m[levelOrder[i]]<m[q.front().first->key])) // Criteria if given node LevelOrder[i] can be present in curr nodes left subtree
+            {  q.front().first->left=new Node(levelOrder[i]);
+               q.push({q.front().first->left,{q.front().second.first,m[q.front().first->key]-1}});
+               x=true;
+            }
+           else if(q.front().first->right==NULL && (m[q.front().first->key]<m[levelOrder[i]] && m[levelOrder[i]]<=q.front().second.second)) //] Criteria if given node LevelOrder[i] can be present in curr nodes right subtree
+           {  q.front().first->right=new Node(levelOrder[i]);
+              q.push({q.front().first->right,{m[q.front().first->key]+1,q.front().second.second}});
+              q.pop();
+              x=true;
+           }
+           else
+             q.pop();
+       }
+    }
+    return root;
+}
