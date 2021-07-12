@@ -1,0 +1,18 @@
+void fun(int &idx,Node* &root,int n,int *pre,char* preLN)
+ {  if(idx==n) // Any Node has either 0 or 2 children
+      return;
+    if(preLN[idx]=='L')  // Leaf Node
+     {    root=new Node(pre[idx++]);
+          return;
+     }
+    root=new Node(pre[idx++]);
+    fun(idx,root->left,n,pre,preLN);
+    fun(idx,root->right,n,pre,preLN);
+ }
+Node *constructTree(int n, int pre[], char preLN[])
+{  
+    Node* root=NULL;
+    int idx=0;
+    fun(idx,root,n,pre,preLN);
+    return root;
+}
