@@ -1,0 +1,23 @@
+class Solution { 
+public:
+    void fun(int s,int d,int&res,vector<int>adj[])  // Graph is DAG (Directed Acyclic Graph)
+     {  if(s==d)
+          {  ++res;
+             return;
+          }
+        for(int x:adj[s])
+        {
+            fun(x,d,res,adj);
+        }
+     }
+	int possible_paths(vector<vector<int>>edges, int n, int s, int d){
+	   vector<int> adj[n];
+	   for(auto x:edges)
+	   {
+	       adj[x[0]].push_back(x[1]);
+	   }
+	   int res=0; // graph is DAG( directed acyclic graph) // so no need for visited vector
+	   fun(s,d,res,adj);
+	   return res;
+	}
+};
