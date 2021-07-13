@@ -1,0 +1,19 @@
+Node* deleteK(Node *head,int k)
+{   if(head==NULL  || k==1)
+      return NULL;
+    if(k==0)
+      return head; 
+    Node* curr=head;
+    while(curr!=NULL)
+    {  Node* prev;
+       for(int i=1;i<k;++i)
+       {  prev=curr;
+          curr=curr->next;
+          if(curr==NULL)
+            return head;
+       }
+       prev->next=curr->next;
+       curr=curr->next;
+    }
+    return head;
+}
