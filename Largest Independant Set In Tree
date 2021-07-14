@@ -1,0 +1,20 @@
+bool fun(Node* root,int &res)
+ {   if(root==NULL)
+       return false;
+     if(root->left==NULL && root->right==NULL)
+     {  ++res;
+        return true;
+     }
+     bool x=fun(root->left,res),y=fun(root->right,res);
+     if(x==false && y==false)
+      {  ++res;
+         return true;
+      }
+     else
+       return false;
+ }
+int LISS(Node *root)
+{  int res=0;
+   bool x=fun(root,res);
+   return res;
+}
