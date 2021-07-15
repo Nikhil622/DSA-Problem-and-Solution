@@ -1,0 +1,17 @@
+void construct(Node* &root,int &idx,int l,int r,int *pre,int n) // (l,r) is range given root should be present in that range for BST criteria
+ {   if(idx==n)
+       return;
+     if(l<pre[idx] && pre[idx]<r)
+     {  int val=pre[idx];
+        root=newNode(pre[idx++]);
+        construct(root->left,idx,l,val,pre,n); // idx val is increase in line above 
+        construct(root->right,idx,val,r,pre,n);
+     }
+ }
+
+Node* constructTree(int pre[], int n)
+{   Node* root=NULL;
+    int idx=0;
+    construct(root,idx,INT_MIN,INT_MAX,pre,n);
+    return root;
+}
