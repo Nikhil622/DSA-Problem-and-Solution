@@ -1,0 +1,15 @@
+class Solution{
+	public:
+	int fun(int l,int r,int *a,vector<vector<int>>&t)
+	 {    if(r<l)
+	        return 0;
+	      if(t[l][r]!=-1)
+	        return t[l][r];
+	     return t[l][r]=max(a[l]+min(fun(l+1,r-1,a,t),fun(l+2,r,a,t)),a[r]+min(fun(l+1,r-1,a,t),fun(l,r-2,a,t)));
+	 }
+	int maxAmount(int arr[], int n)
+	{
+	    vector<vector<int>>t(n,vector<int>(n,-1));
+	    return fun(0,n-1,arr,t);
+	}
+};
