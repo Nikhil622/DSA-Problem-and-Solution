@@ -1,0 +1,38 @@
+long long max(long long x,long long y)
+  {     if(y<=x)
+          return x;
+        return y;
+  }
+long long min(long long x,long long y)
+  {     if(y<=x)
+          return y;
+        return x;
+  }
+  
+  
+// long long maxArea(long long A[], int n)   // Time Complexity: O(n*n)
+// {   long long res=0;
+//     for(int i=0;i<n-1;++i)
+//     {
+//         for(int j=i+1;j<n;++j)
+//         {
+//           res=max(res,(j-i)*min(A[i],A[j]));
+//         }
+//     }
+//     return res;
+// }
+
+
+long long maxArea(long long A[], int n)    // Time Complexity: O(n)
+{   long long res=0;
+    int l=0,r=n-1;
+    while(l<r)
+    {
+        res=max(res,(r-l)*min(A[l],A[r]));
+        if(A[l]<=A[r]) // In this case if you move r to left in any case curr capacity:(r-l)*min(A[l],A[r])) => will decrease.
+          ++l;
+        else
+           --r;
+    }
+   return res;
+}
