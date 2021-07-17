@@ -1,0 +1,57 @@
+class Solution
+{
+  public:
+      void fun(Node* root,bool &res,int target,vector<Node*>&v) // Path from root to target node
+        {  if(res==true || root==NULL)
+             return;
+           if(target==root->data)
+           {  v.push_back(root);
+              res=true;
+              return;
+           }
+           v.push_back(root);
+           fun(root->left,res,target,v);
+           fun(root->right,res,target,v);
+           if(res==false)
+             v.pop_back();
+        }
+      void solve(Node* root,int k,vector<int>&v) // This function gives us those nodes which are in subtree of target node
+       {  if(root==NULL)
+             return;
+          if(k==0)
+          {  v.push_back(root->data);
+             return;  
+          }
+          solve(root->left,k-1,v);
+          solve(root->right,k-1,v);
+       }
+       void solve_fun(Node* root,Node* &child,int k,vector<int>&v) 
+       {  if(root==NULL|| root==child)
+             return;
+          if(k==0)
+          {  v.push_back(root->data);
+             return;  
+          }
+          solve_fun(root->left,child,k-1,v);
+          solve_fun(root->right,child,k-1,v);
+       }
+      vector<int> KDistanceNodes(Node* root, int target , int k)
+      {   vector<Node*>path;
+          bool res=false;
+          fun(root,res,target,path);
+          if(res==false)
+            return {};
+          vector<int>v;
+          int n=path.size();
+          solve(path[n-1],k,v);
+          int i;
+          for(i=n-2;i>=0 && k>=0;--i)
+          {  k=k-1;
+             solve_fun(path[i],path[i+1],k,v); // path[i+1] is child node of path[i] :-
+          }                                    //  So when when we called for path[i] then it should not go the sub-tree that has path[i+1] as its root node 
+                                               // Because we already considered all those elements in previous loop. So we should only considered only other subtree from that loop
+          sort(v.begin(),v.end());
+          return v;
+      }
+
+};
