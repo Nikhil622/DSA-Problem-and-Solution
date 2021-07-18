@@ -1,0 +1,46 @@
+class Solution 
+{
+    public:
+    // SOLUTION 1:-
+    // int celebrity(vector<vector<int> >& grid, int n) // Time Complexity: O(n)    Space Complexity: O(n)
+    // {
+    //     stack<int>st;
+    //     for(int i=0;i<n;++i)
+    //       st.push(i);
+    //     while(st.size()>1)
+    //     {  int x=st.top();
+    //       st.pop();
+    //       int y=st.top();
+    //       st.pop();
+    //       if(grid[x][y]==1) // x knows y : Surely so x cannot be celebrity : (y can be potential Celebrity)
+    //           st.push(y);
+    //       else
+    //           st.push(x);
+    //     }
+    //     int x=st.top();
+    //     for(int i=0;i<n;++i)
+    //     {   if(i!=x && (grid[x][i]==1 || grid[i][x]==0))
+    //           return -1;
+    //     }
+    //     return x;
+    // }
+    
+    // SOLUTION 2:-
+   
+    int fun(int l,int r,vector<vector<int> >& grid)
+     {   if(l==r)
+           return l;
+         if(grid[l][r]==1) // l knows r : So l cannot be celebrity : r can be potential celebrity
+           return fun(l+1,r,grid);
+         else
+           return fun(l,r-1,grid);
+     }
+    int celebrity(vector<vector<int> >& grid, int n)  // Time Complexity: O(n)    Space Complexity: O(1) (If we do not consider space required for recursion)
+    {   int x=fun(0,n,grid); // x: Potential Celebrity
+        for(int i=0;i<n;++i)
+        {   if(i!=x &&(grid[x][i]==1 || grid[i][x]==0))
+              return -1;
+        }
+        return x;
+    }
+};
