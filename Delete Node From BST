@@ -1,0 +1,73 @@
+Node* find(Node* root,int X)  // Function finding node whose data==x
+ {   if(root==NULL)
+        return NULL;
+     if(root->data==X)
+       return root;
+     auto x=find(root->left,X),y=find(root->right,X);
+     if(x==NULL)
+        return y;
+     else
+       return x;
+ }
+
+Node* solve(Node* &root,Node* curr,bool & done) // Function for : If node:- To delete node (Node->data==x) : Given node is LEAF Node
+ {    if(root==NULL)
+         return root;
+      if(root==curr)
+         {   done=true;
+             return NULL;
+         }
+      if(done==true)
+        return root;
+      root->left=solve(root->left,curr,done);
+      root->right=solve(root->right,curr,done);
+      return root;
+ }
+Node* PREV(Node* &root,Node* &prev) 
+ {   if(root->left==NULL && root->right==NULL)
+       {   int t=prev->data;
+           prev->data=root->data;
+           root->data=t;
+           return NULL; 
+       }
+     if(root->right==NULL)
+      { int t=prev->data;
+        prev->data=root->data;
+        root->data=t;
+        root->left=PREV(root->left,root);
+      }
+     else
+        root->right=PREV(root->right,prev);
+      return root;
+ }
+ Node* NEXT(Node* &root,Node* &prev)
+  {   if(root->left==NULL && root->right==NULL)
+       {   int t=prev->data;
+           prev->data=root->data;
+           root->data=t;
+           return NULL; 
+       }
+       if(root->left!=NULL)
+          root->left=NEXT(root->left,prev);
+       else{
+           int t=prev->data;
+           prev->data=root->data;
+           root->data=t;
+           root->right=NEXT(root->right,root);
+       }
+       return root;
+  }
+Node *deleteNode(Node *root,  int X)
+{   Node* curr=find(root,X);
+    if(curr==NULL)
+      return root;
+    if(curr->left==NULL && curr->right==NULL) // curr is :- Leaf Node
+      {   bool done=false;
+          return solve(root,curr,done);
+      }
+    if(curr->left!=NULL) // Finding left successive node in in_order traversal and replacing with it
+      curr->left=PREV(curr->left,curr);
+    else
+      curr->right=NEXT(curr->right,curr); // Finding right successive node in in_order traversall and replacing with it
+    return root;
+}
