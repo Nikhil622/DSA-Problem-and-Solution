@@ -1,0 +1,39 @@
+class Solution
+{  
+   // We will find those subtree for which (total_nodes_in_subtree == total_nodes_in_tree_S) condition holds.
+   // These subtree will have different nodes (i.e. No subtree will have any common node)
+   // So we check these subtree(total_nodes_in_subtree == total_nodes_in_tree_S) if they are equal or not
+  public:
+    int Total_Node(Node* root) // Total nodes in subtree in Tree S
+     {  if(root==NULL)
+         return 0;
+        int x=Total_Node(root->left),y=Total_Node(root->right);
+        return 1+x+y;
+     }
+    int fun(Node* root,unordered_map<int,vector<Node*>>&m) // for storing total nodes in subtree
+     {  if(root==NULL)
+         return 0;
+        int x=fun(root->left,m),y=fun(root->right,m);
+        m[x+y+1].push_back(root);
+        return 1+x+y;
+     }
+    bool solve(Node* r1,Node* r2) // Checking in two tree starting with given nodes are identical or not
+     {  if(r1==NULL && r2==NULL)
+          return true;
+        if(r1==NULL || r2==NULL)
+          return false;
+        return (r1->data==r2->data && solve(r1->left,r2->left) && solve(r1->right,r2->right));
+     }
+    bool isSubTree(Node* t, Node* s) 
+    {  unordered_map<int,vector<Node*>>m;
+       int total=Total_Node(s);
+       int x=fun(t,m);
+       if(m.find(total)==m.end())
+         return false;
+       for(int i=0;i<m[total].size();++i)
+       {  if(solve(m[total][i],s)==true)
+            return true;
+       }
+       return false;
+    }
+};
