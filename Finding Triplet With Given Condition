@@ -1,0 +1,21 @@
+class Solution{
+public:
+	bool recreationalSpot(int arr[], int n){
+		// O(n^3) : Brute Force Solution 
+		stack<int>st;
+		int prev_min[n];
+		prev_min[0]=arr[0];
+		for(int i=1;i<n;++i)
+		   prev_min[i]=min(arr[i],prev_min[i-1]);
+		for(int i=n-1;i>=0;--i)
+		 {  if(prev_min[i]<arr[i])
+		      {   while(st.empty()==false && st.top()<=prev_min[i])
+		             st.pop();
+		          if(st.empty()==false && st.top()<arr[i])
+		            return true;
+		          st.push(arr[i]);
+		      }
+		 }
+		 return false;
+	}
+};
