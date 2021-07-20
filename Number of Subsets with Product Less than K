@@ -1,0 +1,20 @@
+class Solution {
+  public:
+    void fun(int idx,int product,int &res,int *a,int k,int n)
+     {   if(idx==n)
+           return;
+         for(int i=idx;i<n;++i)
+         {  if(k<product*a[i]) // If k<product*a[i] holds true : We have to return because any element after that will have product greator : As we have sorted the array earlier
+               return;
+            ++res;
+            fun(i+1,product*a[i],res,a,k,n);
+         }
+     }
+    int numOfSubsets(int arr[], int n, int k) {
+        int product=1;
+        int res=0;
+        sort(arr,arr+n);
+        fun(0,product,res,arr,k,n);
+        return res;
+    }
+};
