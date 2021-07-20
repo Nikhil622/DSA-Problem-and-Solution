@@ -1,0 +1,43 @@
+class Solution {
+public:
+    void fun(Node* root,vector<int>&res) // Left Boundary Traversal
+     {  if(root==NULL)
+          return;
+        if(root->left==NULL && root->right==NULL)
+           return;
+        res.push_back(root->data);
+        if(root->left!=NULL)
+          fun(root->left,res);
+        else
+          fun(root->right,res);
+     }
+    void InOrder(Node* root,vector<int>&res) // For Leaf Nodes
+     {   if(root==NULL)
+           return;
+         if(root->left==NULL && root->right==NULL)
+          {  res.push_back(root->data);
+             return;
+          }
+         InOrder(root->left,res);
+         InOrder(root->right,res);
+     }
+    void solve(Node* root,vector<int>&res) // Right Boundry Traversal in Reverse Order
+     {   if(root==NULL)
+           return;
+         if(root->left==NULL && root->right==NULL)
+           return;
+         if(root->right!=NULL)
+            solve(root->right,res);
+         else
+            solve(root->left,res);
+         res.push_back(root->data);
+     }
+    vector <int> printBoundary(Node *root)
+    {  vector<int>res;
+       res.push_back(root->data);  // Left Boundary Traversal
+       fun(root->left,res);        // For Leaf Nodes
+       InOrder(root,res);          // Right Boundry Traversal
+       solve(root->right,res);
+       return res;
+    }
+};
