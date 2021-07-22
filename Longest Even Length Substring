@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	int t;
+	cin>>t;
+	while(t--)
+	{  string s;
+	   cin>>s;
+	   if(s.size()==1)
+	   { cout<<0<<endl;
+	     continue; 
+	   }
+	   unordered_map<int,int>m;
+	   int res=0;
+	   m[0]=s[0]-'0';
+	   for(int i=1;i<s.size();++i)
+    	 {   m[i]=m[i-1]+s[i]-'0';
+    	     int k=0;// Assuming i: Odd Index
+    	     if(i%2==0) // i : Even Index
+    	       k=1;
+    	     for(int j=k;j<i;j=j+2)
+    	     { if(j==0)
+    	         { int mid=i/2;
+    	           if(m[mid]==m[i]-m[mid])
+    	             {  res=max(res,i+1);
+    	                break;
+    	             }
+    	         }
+    	        else 
+    	          { int mid=(i+j)/2;
+    	            if(m[mid]-m[j-1]==m[i]-m[mid])
+    	            {  res=max(res,i-j+1);
+    	               break;
+    	            }
+    	          }
+    	 }
+	   }
+	   cout<<res<<endl;
+	}
+	return 0;
+}
