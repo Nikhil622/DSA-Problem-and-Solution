@@ -1,0 +1,41 @@
+class Solution
+{
+	public:
+	//Function to find the shortest distance of all the vertices
+    //from the source vertex S
+    // void fun(int s,vector<int>&dist,vector<bool>&visited,vector<vector<int>>*adj) // Very High Complexity
+    //  {    visited[s]=true;
+    //       for(auto x:adj[s])
+    //       {  if(visited[x[0]]==false)
+    //           {  dist[x[0]]=dist[s]+x[1];
+    //               fun(x[0],dist,visited,adj);
+    //           }
+    //          else if(dist[s]+x[1]<dist[x[0]])
+    //          {  dist[x[0]]=dist[s]+x[1];
+    //             fun(x[0],dist,visited,adj); 
+    //          }
+    //       }
+    //  }
+    vector <int> dijkstra(int v, vector<vector<int>> adj[], int s)
+    {  vector<int>dist(v,INT_MAX);
+       vector<bool>visited(v,false);
+       dist[s]=0;
+       for(int k=0;k<v-1;++k)
+       {  int idx=-1;
+          int val=INT_MAX;
+          for(int j=0;j<v;++j)
+          {  if(visited[j]==false && dist[j]<val)
+              {  idx=j;
+                 val=dist[j];
+              }
+          }
+          if(idx==-1)
+            break;
+          
+          for(auto vt:adj[idx])
+           dist[vt[0]]=min(dist[vt[0]],dist[idx]+vt[1]);
+          visited[idx]=true;
+       }
+       return dist;
+    }
+};
