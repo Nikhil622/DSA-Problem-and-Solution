@@ -2,6 +2,24 @@ class Solution{
   public:
     // Time Complexity : O(n^2)
     // Space Complexity: O(n)
+   
+   // int fun(int n,vector<int>&t,int *price) // Recursive With Same Complexities // Dynamically Optimized Solution
+    //  {   if(n==0)
+    //       return 0;
+    //      if(t[n]!=-1)
+    //       return t[n];
+    //      t[n]=price[n-1];
+    //      for(int i=1;i<n;++i)
+    //      {
+    //          t[n]=max(t[n],fun(n-i,t,price)+fun(i,t,price));
+    //      }
+    //      return t[n];
+    //  }
+    // int cutRod(int price[], int n) { 
+    //     vector<int>t(n+1,-1);
+    //     return fun(n,t,price);
+    // }
+    
     int cutRod(int price[], int n) {
         vector<int>t(n+1);
         t[0]=0;
@@ -16,3 +34,4 @@ class Solution{
         return t[n];
     }
 };
+
