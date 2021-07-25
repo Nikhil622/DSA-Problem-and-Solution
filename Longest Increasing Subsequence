@@ -1,0 +1,24 @@
+class Solution{
+public:
+    int fun(int idx,string&s,vector<int>&t)
+     {  if(idx==s.size())
+         return 0;
+        if(t[idx]!=-1)
+         return t[idx];
+        int res=1;
+        for(int i=idx+1;i<s.size();++i)
+        { if(s[idx]<s[i])
+            res=max(res,1+fun(i,s,t));
+        }
+        return t[idx]=res; 
+     }
+    int maxLength(string &s)
+    {  vector<int>t(s.size(),-1);
+       int res=1;
+       for(int i=0;i<s.size();++i) 
+        {  if(t[i]==-1)  // We only care about those t[i] value which are not calculate , if they are already calculated they cannot be LIS
+             res=max(res,fun(i,s,t));
+        }
+       return res;
+    }
+};
