@@ -1,0 +1,15 @@
+class Solution
+{
+  public:
+
+    int minOperation(int n)
+    {   if(n==0)
+         return 0;
+        if(n==1 || n==2) // From zero we cannot double : Therefore for n:2 steps
+          return n;
+        if(n%2==0) // Greedy Approach
+         return 1+minOperation(n/2);
+        else
+         return 1+minOperation(n-1);
+    }
+};
