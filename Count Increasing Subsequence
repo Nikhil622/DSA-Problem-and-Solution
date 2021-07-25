@@ -1,0 +1,43 @@
+class Solution{
+    public:
+    // unsigned long long int fun(int idx,int arr[],int n) // Recursive 
+    //  {  if(idx==n)
+    //      return 0;
+    //     int res=1;
+    //     for(int i=idx+1;i<n;++i)
+    //      {  if(arr[idx]<arr[i])
+    //          res=res+fun(i,arr,n);
+    //      } 
+    //     return res;
+    //  }
+    // unsigned long long int countSub(int arr[], int n)
+    // {  unsigned long long int res=0;
+    //   for(int i=0;i<n;++i)
+    //     res+=fun(i,arr,n);
+    //   return res;
+    // } 
+    
+    unsigned long long int fun(int idx,int arr[],int n,vector<unsigned long long int>&t) // Dynamically Optimized Recursive Code
+     {  if(idx==n)
+         return 0;
+        if(t[idx]!=-1)
+          return t[idx];
+        int res=1;
+        for(int i=idx+1;i<n;++i)
+         {  if(arr[idx]<arr[i])
+             res=res+fun(i,arr,n,t);
+         } 
+        return t[idx]=res;
+     }
+    unsigned long long int countSub(int arr[], int n)
+    {  unsigned long long int res=0;
+       vector<unsigned long long int>t(n,-1);  // For each index stores value of total increasing subsequences starting with that index
+       for(int i=0;i<n;++i)
+        {  if(t[i]==-1)
+            auto x=fun(i,arr,n,t);
+        }
+       for(auto x:t)
+         res+=x;
+      return res;
+    }
+};
