@@ -1,0 +1,33 @@
+class Solution{
+public:
+    int fun(int idx,int a[],int N,vector<int>&t)
+     {  if(idx==N)
+          return 0;
+        if(t[idx]!=-1)
+         return t[idx];
+        int res=a[idx];
+        for(int i=idx+1;i<N;++i)
+        {  if(a[idx]<a[i])
+            res=max(res,a[idx]+fun(i,a,N,t));
+        }
+        return t[idx]=res;
+     }
+    vector<int> maxSumSequence(int N, int A[])
+    {  vector<int>t(N,-1); // ith index element stores : maximum sum increasing subsequence starting at index i
+       int res=-1;
+       for(int i=0;i<N;++i)
+       {  if(t[i]==-1)
+            res=max(res,fun(i,A,N,t));
+       }
+       if(res==0)
+        return {0};
+       vector<int>v;
+       for(int i=0;i<N && res>0;++i)
+       {  if(t[i]==res)
+           {  res=res-A[i];
+              v.push_back(A[i]);
+           }
+       }
+       return v;
+    }
+};
