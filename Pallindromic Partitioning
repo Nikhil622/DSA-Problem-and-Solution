@@ -1,0 +1,54 @@
+class Solution{
+public:
+    int isPallindrome(int l,int r,string&s,vector<vector<int>>&t)
+     {  if(t[l][r]!=-1)
+         return t[l][r];
+        int x=l,y=r;
+        while(x<=y)
+        {  if(s[x++]!=s[y--])
+             return t[l][r]=0;
+        }
+       return t[l][r]=1;  
+     }
+    int fun(int l,int r,string &s,vector<vector<int>>&t,vector<vector<int>>&v)
+     {  if(l==r)
+         return 0;
+        if(v[l][r]!=-1)
+         return v[l][r]; 
+        if(t[l][r]==1) // Checking if from index l to r is pallindrome or not  // if(isPallindrome(l,r,s,t)==1) return 0;
+         return 0;
+        int res=r-l;
+        for(int i=l+1;i<=r;++i)
+         {  
+             res=min(res,1+fun(l,i-1,s,t,v)+fun(i,r,s,t,v));
+         }
+       return v[l][r]=res;
+     }
+    int palindromicPartition(string s)
+    {   int n=s.size();
+        vector<vector<int>>v(n,vector<int>(n,-1));
+        vector<vector<int>>t(n,vector<int>(n,-1));  // For storing the given substring is pallindrome or not
+        for(int i=0;i<n;++i)  
+        {   t[i][i]=1;
+            for(int j=i+1;j<n;++j)
+            {  if(s[i]!=s[j]) // for i to j : substring will not be pallidrome
+                 t[i][j]=0;
+               else     // check if given string is pallindrome or not
+                 {  bool a=true;
+                    int x=i,y=j;
+                    while(x<=y)
+                     {  if(s[x++]!=s[y--])
+                          {  a=false;
+                             break;  
+                          }
+                     }
+                    if(a==true)
+                      t[i][j]=1;
+                    else
+                      t[i][j]=0;
+                 }
+            }
+        }
+        return fun(0,n-1,s,t,v);
+    }
+};
