@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    int isPallindrome(int l,int r,string &s,vector<vector<int>>&t)
+     {   if(t[l][r]!=-1)
+          return t[l][r];
+         int x=l,y=r;
+         while(l<=r)
+         {  if(s[l++]!=s[r--])
+              return t[x][y]=0;
+         }
+        return t[x][y]=1;
+     }
+    void fun(int l,int r,string&s,vector<string>&vt,vector<vector<int>>&t,vector<vector<string>>&res)
+     {   if(r<l)
+           {   res.push_back(vt);
+               return;
+           }
+          string x="";
+          for(int i=l;i<=r;++i)
+          {  x.push_back(s[i]);
+             if(isPallindrome(l,i,s,t)==1)
+               {   vt.push_back(x);
+                   fun(i+1,r,s,vt,t,res);
+                   vt.pop_back();
+               }
+          }
+     }
+    vector<vector<string>> allPalindromicPerms(string s) {
+        int n=s.size();
+        vector<string>vt;
+        vector<vector<string>>res;
+        vector<vector<int>>t(n,vector<int>(n,-1));
+        fun(0,n-1,s,vt,t,res);
+        return res;
+    }
+};
