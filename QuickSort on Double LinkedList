@@ -1,0 +1,30 @@
+Node* solve(Node* l,Node* r)
+{   Node* x=l; 
+    while(x!=r && x->data<r->data)
+      x=x->next;
+    if(x==r)
+     return r;
+    Node* curr=x->next;
+    while(curr!=r)
+    {  if(curr->data<r->data)
+        {   swap(x->data,curr->data); 
+            x=x->next;
+        }
+       curr=curr->next;
+    }
+    swap(x->data,r->data);
+    return x;
+}
+void fun(Node * l,Node* r)
+ {   if(l==NULL || r==NULL || l==r)
+       return;
+     if(l->prev==r || r->next==l)
+      return;
+       Node* p=solve(l,r);
+       fun(l,p->prev);
+       fun(p->next,r);
+ }
+Node* partition(Node *l, Node *h){
+    fun(l,h);
+    return l;
+}
