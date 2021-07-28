@@ -1,0 +1,27 @@
+int isPallindrome(int l,int r,char s[])
+ {
+       int x=l,y=r;
+       while(x<=y)
+       {  if(s[x++]!=s[y--])
+           return 0;
+       }
+       return 1;
+ }
+int CountPS(char s[], int n)
+{   int t[n][n];
+    int res=0;
+    for(int i=0;i<n;++i)
+    {   t[i][i]=0;
+        for(int j=i+1;j<n;++j)
+        {  if(s[i]!=s[j]) // Definitely substring for (i,j) will not be a pallindromic substring as first and last characters are not equal in that substring
+             t[i][j]=0;
+           else  // check if  substring (i,j) is pallindrome or not
+            {
+                t[i][j]=isPallindrome(i,j,s);
+                if(t[i][j]==1)
+                 res+=1;
+            }
+        }
+    }
+    return res;
+}
