@@ -1,0 +1,53 @@
+
+class Solution {
+public:
+//     void fun(int idx,int sum,vector<int>&res,vector<int>&v,unordered_set<int>&s)
+//       {   if(idx==v.size())
+//           return;
+//           for(int i=idx;i<v.size();++i)
+//           {  if(i!=idx && v[i-1]==v[i])
+//               continue;
+//              sum+=v[i];
+//              if(s.find(sum)==s.end())
+//               { res.push_back(sum);
+//                 s.insert(sum);
+//               }
+//              fun(i+1,sum,res,v,s);
+//              sum-=v[i];
+//           }
+//       }
+// 	vector<int> DistinctSum(vector<int>v){
+// 	    sort(v.begin(),v.end());
+// 	    unordered_set<int>s;
+// 	    int sum=0;
+// 	    vector<int>res;
+// 	    res.push_back(0);
+// 	    fun(0,sum,res,v,s);
+// 	    sort(res.begin(),res.end());
+// 	    return res;
+// 	}
+
+  vector<int> DistinctSum(vector<int>v){
+      int sum=0;
+      for(int x:v)
+        sum+=x;
+      int n=v.size();
+      vector<vector<bool>>t(n+1,vector<bool>(sum+1,false));
+      for(int i=0;i<=n;++i)
+        t[i][0]=true;
+      for(int i=1;i<=n;++i)
+      {    for(int j=1;j<v[i-1];++j)
+             t[i][j]= t[i-1][j];
+           for(int j=v[i-1];j<=sum;++j)
+            {  
+                t[i][j]= (t[i-1][j-v[i-1]] || t[i-1][j]);
+            }
+      }
+      vector<int>res;
+      for(int i=0;i<=sum;++i)
+      {  if(t[n][i]==true)
+           res.push_back(i);
+      }
+      return res;
+  }
+};
