@@ -1,0 +1,42 @@
+class Solution{
+	public:
+	void fun(int idx,int sum,vector<int>&v,vector<vector<int>>&res,int n)
+	 {  if(sum==0)
+	    {  res.push_back(v);
+	       return;
+	    }
+	    for(int i=idx;i<=n;++i)
+	    {   if(sum<i)
+	         return;
+	        v.push_back(i);
+	        fun(i,sum-i,v,res,n);
+	        v.pop_back();
+	    }
+	 }
+	bool static comp(vector<int>x,vector<int>y)
+	 {  if(x[0]!=y[0])
+	     return x[0]>y[0];
+	    int m=x.size(),n=y.size();
+	    int i=0,j=0;
+	    while(i<m && j<n)
+	    {  if(x[i]==y[j])
+	        {  ++i;
+	           ++j;
+	        }
+	       else if(x[i]>y[j])
+	         return true;
+	       else
+	         return false;
+	    }
+	 }
+    vector<vector<int>> UniquePartitions(int n){
+       vector<int>v;
+       vector<vector<int>>res;
+       fun(1,n,v,res,n);
+       for(auto &x:res)
+         sort(x.begin(),x.end(),greater<int>());
+       reverse(res.begin(),res.end());
+       sort(res.begin(),res.end(),comp);
+       return res;
+    }
+};
