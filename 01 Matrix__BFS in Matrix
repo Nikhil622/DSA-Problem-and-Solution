@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int m=mat.size(),n=mat[0].size();
+        vector<vector<int>>v(m,vector<int>(n,INT_MAX));
+        queue<pair<int,int>>q;
+        for(int i=0;i<m;++i)
+        {
+            for(int j=0;j<n;++j)
+            {  if(mat[i][j]==0)
+                {  v[i][j]=0;
+                    q.push({i,j});
+                }
+            }
+        }
+        int static a[]={-1,1,0,0};
+        int static b[]={0,0,-1,1};
+        while(q.empty()==false)
+        {   auto p=q.front();
+            q.pop();
+            for(int i=0;i<4;++i)
+            {  int x=a[i]+p.first,y=b[i]+p.second;
+               if(x>=0 && x<m && y>=0 && y<n && v[p.first][p.second]+1<v[x][y])
+               {  v[x][y]=v[p.first][p.second]+1;
+                   q.push({x,y});
+               }
+            }
+        }
+        return v;
+    }
+};
