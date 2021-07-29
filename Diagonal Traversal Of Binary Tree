@@ -1,0 +1,22 @@
+vector<int> diagonal(Node *root)
+{    
+    queue<Node*>q;
+    q.push(root);
+    vector<int>res;
+    while(q.empty()==false)
+    {  
+       int size=q.size();  // Currently q cointains all those noded whose slope is same
+       while(size--)
+       {   Node* x=q.front();
+           q.pop();
+           while(x!=NULL)
+            {   
+                res.push_back(x->data);
+                if(x->left!=NULL)
+                  q.push(x->left);
+                x=x->right;
+            }
+       }
+    }
+    return res;
+}
