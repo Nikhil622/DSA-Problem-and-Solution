@@ -1,0 +1,21 @@
+class Solution{
+public:	
+		
+	int isDivisible(string &s){
+	    bool x=true;
+	    int sum=0;
+	    for(int i=s.size()-1;i>=0;--i)
+	    {  if(x==true)
+	        {  if(s[i]=='1') // It will contribute the factor of 1
+	             sum+=1;
+	        }
+	       else
+	       {  if(s[i]=='1')  // It will contribute the factor of 2
+	             sum+=2;
+	       }
+	       x=!x;
+	    }
+	    return (sum%3==0);
+	}
+
+};
