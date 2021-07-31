@@ -1,0 +1,19 @@
+class Solution
+{
+    public:
+        int fun(int n,vector<int>&t)
+        {  if(n<=4)
+            return n;
+           if(t[n]!=-1)
+             return t[n];
+           int val=n/2+n/3+n/4;
+           if(val<=n)
+            return t[n]=n;
+           else
+             return t[n]=max(n/2,fun(n/2,t))+max(n/3,fun(n/3,t))+max(n/4,fun(n/4,t));
+        }
+        int maxSum(int n)
+        {   vector<int>t(n+1,-1);
+            return fun(n,t);
+        }
+};
