@@ -1,0 +1,19 @@
+class Solution{  // Longest Common Subsequence
+	public:
+	int fun(int l,int r,string &x,string &y,vector<vector<int>>&t)
+	 {    if(l==x.size() || r==y.size())
+	        return 0;
+	      if(t[l][r]!=-1)
+	        return t[l][r];
+	      if(x[l]==y[r])
+	       return  t[l][r]=1+fun(l+1,r+1,x,y,t);
+	      else
+	       return t[l][r]=max(fun(l,r+1,x,y,t),fun(l+1,r,x,y,t));
+	 }
+	int findMinCost(string X, string Y, int costX, int costY)
+	{   int m=X.size(),n=Y.size();
+	    vector<vector<int>>t(m+1,vector<int>(n+1,-1));
+	    int len=fun(0,0,X,Y,t);
+	    return (m-len)*costX + (n-len)*costY;
+	}
+};
