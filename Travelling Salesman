@@ -1,0 +1,30 @@
+class Solution {
+public:
+
+void fun(int s,int l,int sum,int &res,vector<bool>&visited,vector<vector<int>>&cost,vector<pair<int,int>>adj[])
+ {   if(l==visited.size())
+     {   res=min(res,sum+cost[s][0]);
+         return;
+     }
+     visited[s]=true;
+     for(auto x:adj[s])
+     {  if(visited[x.first]==false)
+          fun(x.first,l+1,sum+x.second,res,visited,cost,adj);
+     }
+     visited[s]=false;
+ }
+int total_cost(vector<vector<int>>cost){
+   int n=cost.size();
+   vector<pair<int,int>>adj[n];
+   for(int i=0;i<n;++i)
+   {  for(int j=0;j<n;++j)
+       {  if(i!=j)
+           adj[i].push_back({j,cost[i][j]}); 
+       }
+   }
+   int res=INT_MAX;
+   vector<bool>v(n,false);
+   fun(0,1,0,res,v,cost,adj);
+   return res;
+ }
+};
