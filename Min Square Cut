@@ -1,0 +1,24 @@
+class Solution{
+	public:
+	
+	int fun(int l,int b,vector<vector<int>>&t)
+	 {   if(t[l][b]!=-1)
+	       return t[l][b];
+	     if(l==b)
+	      return 1;
+	     if(l%b==0)
+	      return t[l][b]=(l/b);
+	     if(b%l==0)
+	      return t[l][b]=(b/l);
+	    int x=INT_MAX,y=INT_MAX;
+	    for(int i=1;i<=l/2;++i)
+	      x=min(x,fun(i,b,t)+fun(l-i,b,t));
+	    for(int j=1;j<=b/2;++j)
+	      y=min(y,fun(l,j,t)+fun(l,b-j,t));
+	    return t[l][b]=min(x,y);
+	 }
+	int minCut(int M, int N)
+	{ vector<vector<int>>t(M+1,vector<int>(N+1,-1));
+	  return fun(M,N,t);
+	}
+};
