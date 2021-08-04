@@ -1,0 +1,30 @@
+#include<bits/stdc++.h>
+#define M 10000
+using namespace std;
+
+vector<int>t(M+5,-1);
+class Solution{
+	public:
+	int fun(int n)
+	 {  if(t[n]!=-1)
+	     return t[n];
+	    int x=sqrt(n);
+	    if(x*x==n)
+	      return 1;
+	    int res=n;
+	    for(int i=1;i<=x;++i)
+	      res=min(res,1+fun(n-i*i));
+	    return t[n]=res;
+	 }
+	int MinSquares(int n)
+	{   
+	    return fun(n);
+	}
+};
+
+int main()
+{  
+    int n;
+    cin>>n;
+    cout<<fun(n)<<endl;
+}
