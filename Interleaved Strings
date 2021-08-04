@@ -1,0 +1,23 @@
+bool fun(int idx,int i,int j,string &x,string &y,string &s)
+     {    if(idx==s.size())
+            return true;
+          if(i==x.size())
+             return (s[idx]==y[j] && fun(idx+1,i,j+1,x,y,s));
+          if(j==y.size())
+            return (s[idx]==x[i] && fun(idx+1,i+1,j,x,y,s));
+          else{
+            if(s[idx]==x[i] && s[idx]==y[j])
+               return fun(idx+1,i+1,j,x,y,s)||fun(idx+1,i,j+1,x,y,s);
+            else if(s[idx]==x[i])
+              return fun(idx+1,i+1,j,x,y,s);
+            else if(s[idx]==y[j])
+              return fun(idx+1,i,j+1,x,y,s);
+            return false;
+          }
+     }
+    bool isInterleave(string A, string B, string C) 
+    {  
+       if(A.size()+B.size()!=C.size())
+         return false;
+       return fun(0,0,0,A,B,C);
+    }
