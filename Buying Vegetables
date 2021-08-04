@@ -1,0 +1,24 @@
+class Solution{
+public:
+    int fun(int idx,int prev,vector<int>cost[],vector<vector<int>>&t)
+     {   if(idx==t.size())
+           return 0;
+         if(t[idx][prev]!=-1)
+           return t[idx][prev];
+         int res=INT_MAX;
+         for(int i=0;i<3;++i)
+          {  if(i!=prev)
+              res=min(res,cost[idx][i]+fun(idx+1,i,cost,t));
+          }
+        return t[idx][prev]=res;
+     }
+    int minCost(int N, vector<int> cost[]) {
+        vector<vector<int>>t(N,vector<int>(3,-1));
+       int res=INT_MAX;
+       for(int i=0;i<3;++i)
+       {
+           res=min(res,cost[0][i]+fun(1,i,cost,t));
+       }
+       return res;
+    }
+};
