@@ -1,0 +1,18 @@
+void fun(int idx,int k,vector<int>&v,int x,int &res)
+ {   if(k==0)
+      {   res=max(res,x);
+          return;
+      }
+     if(idx==v.size())
+      return;
+     for(int i=idx;i<v.size();++i)
+     {  x=(x^v[i]);
+        fun(i+1,k-1,v,x,res);
+        x=(x^v[i]);
+     }
+ }
+int Solution::solve(vector<int> &A) {
+   int res=0;
+   fun(0,4,A,0,res);
+   return res;
+}
