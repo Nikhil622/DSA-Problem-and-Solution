@@ -1,0 +1,19 @@
+class Solution{
+    int n;
+public:
+    int fun(int idx,int w,int val[],int wt[],vector<vector<int>>&t)
+     {  if(idx==n || w==0)
+          return 0;
+        if(t[idx][w]!=-1)
+          return t[idx][w];
+        if(wt[idx]<=w)
+          return t[idx][w]=max(val[idx]+max(fun(idx,w-wt[idx],val,wt,t),fun(idx+1,w-wt[idx],val,wt,t)),fun(idx+1,w,val,wt,t));
+        else
+          return t[idx][w]=fun(idx+1,w,val,wt,t);
+     }
+    int knapSack(int N, int W, int val[], int wt[])
+    {  this->n=N;
+       vector<vector<int>>t(N+1,vector<int>(W+1,-1));
+       return fun(0,W,val,wt,t);
+    }
+};
