@@ -1,0 +1,62 @@
+int lcm(int x,int y)
+{  if(x==0 || y==0)
+     return 0;
+   int m=min(x,y),M=max(x,y);
+   for(int i=M;i<=m*M;i+=M)  
+   {  if(i%m==0)
+        return i;
+   }
+}
+void solve(int k,vector<int>&v)
+ {   if(k==1)
+      {  for(int i=0;i<v.size()-1;++i)
+           v[i]=v[i+1];
+         v.pop_back();
+         v.pop_back();
+      }
+    else if(k==2)
+     {   int y=v.size()/2;
+         for(int i=y;i<v.size()-1;++i)
+           v[i]=v[i+1];
+         v.pop_back();
+         for(int i=0;i<v.size()-1;++i)
+           v[i]=v[i+1];
+         v.pop_back();
+     }
+    else
+    {   int y=v.size()/2;
+        for(int i=y;i<v.size()-1;++i)
+          v[i]=v[i+1];
+        v.pop_back();
+        v.pop_back();
+    }
+ }
+ 
+ void fun(int sum,int &res,vector<int>v)
+{    if(v.size()==2)
+     {  res=max(res,sum+lcm(v[0],v[1]));
+        return ;
+     }
+     if(v.size()==4)
+     {  res=max(res,sum+lcm(v[0],v[3])+lcm(v[1],v[2]));
+        res=max(res,sum+lcm(v[0],v[2])+lcm(v[1],v[3]));
+        res=max(res,sum+lcm(v[2],v[3])+lcm(v[0],v[1]));
+        return;
+     }
+    int mid=v.size()/2;
+    int a=lcm(v[0],v[v.size()-1]);
+    int b=lcm(v[0],v[mid]);
+    int c=lcm(v[mid],v[v.size()-1]);
+    vector<int>x=v,y=v,z=v;
+    solve(1,x);
+    solve(2,y);
+    solve(3,z);
+    fun(sum+a,res,x);
+    fun(sum+b,res,y);
+    fun(sum+c,res,z);
+}
+int Solution::solve(vector<int> &v){
+   int res=INT_MIN;
+   fun(0,res,v);
+   return res;
+}
