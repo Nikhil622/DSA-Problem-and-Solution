@@ -1,0 +1,55 @@
+class Solution
+{
+	public:
+	    int fun(int i,int j,string&s,string&p,vector<vector<int>>&t)  // Function for calculation lcs from index (i,s.size()-1 in string s && j,p.size()-1 in string p)
+	     {   if(i==s.size() || j==p.size())
+	          return 0;
+	         if(t[i][j]!=-1)
+	           return t[i][j];
+	         if(s[i]==p[j])
+	          return t[i][j]=1+fun(i+1,j+1,s,p,t);
+	         else
+	          return t[i][j]=max(fun(i+1,j,s,p,t),fun(i,j+1,s,p,t));
+	     }
+	    void solve(int i,int j,int len,string &str,string&s,string&p,vector<vector<int>>&t,vector<string>&res)
+	    {    if(len==0)
+	         {  res.push_back(str);
+	            return;  
+	         }
+	         if(i==s.size() || p.size()==j)
+	            return;
+	         for(char x='a';x<='z';++x)
+	         {  bool val=false;  // val : if we found perticular character in both string then these two for loops should stop because for unique lcs: ....x and ....x these two subsequences are same
+	            for(int k=i;k<s.size() && val==false;++k)
+	             {  if(s[k]==x)
+    	                 { for(int l=j;l<p.size() && val==false;++l)
+                	        {  if(p[l]==x)
+                	           {  
+                	               if(t[k][l]==len)
+                    	               {  str.push_back(s[k]);
+                    	                   solve(k+1,l+1,len-1,str,s,p,t,res);
+                    	                   str.pop_back();
+                    	                }
+                                  val=true; // Once character found in both string these two for loop should stop   ....x and ....x are same
+                	           }
+                	        }
+                         val=true; // Once second loop is over two loop should stop 
+    	               }
+	             }
+	         }
+	    }
+		vector<string> all_longest_common_subsequences(string s, string p)
+		{  vector<string>res;
+		   int m=s.size(),n=p.size();
+		   vector<vector<int>>t(m,vector<int>(n,-1));
+		   int lcs=fun(0,0,s,p,t);
+		   for(int i=0;i<m;++i)
+		   {    for(int j=0;j<n;++j)
+		         int k = fun(i,j,s,p,t);
+		   }
+		   string str="";
+		   unordered_set<string>mp;
+		   solve(0,0,lcs,str,s,p,t,res);
+		   return res;
+		}
+};
