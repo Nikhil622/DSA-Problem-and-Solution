@@ -1,0 +1,35 @@
+class Solution{
+public:
+    int maxLength(string &s){  // Time Complexity: O(n)    Space Complexity: O(n)
+        stack<int>st;
+        int n=s.size();
+        vector<int>v(n,-1);
+        for(int i=0;i<n;++i)
+        {  if(s[i]=='(')
+            st.push(i);
+           else{
+                 if(st.empty()==true || s[st.top()]==')')
+                   st.push(i);
+                else
+                   {   v[i]=1;
+                       v[st.top()]=1;
+                       st.pop();
+                   }
+            }
+        }
+        int i=0,res=0;
+        while(i<n)
+        {  if(v[i]==-1)
+             ++i;
+           else
+           {  int curr=0;
+              while(i<n && v[i]==1)
+                {  curr+=1;
+                   ++i;
+                }
+             res=max(res,curr);
+           }
+        }
+        return res;
+    }
+};
