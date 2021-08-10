@@ -1,0 +1,54 @@
+class Solution{
+  public:
+    // arr[] : the input array
+    // N : size of the array arr[]
+    
+    //Function to return length of longest subsequence of consecutive integers.
+    // int findLongestConseqSubseq(int arr[], int N)    // Time Complexity: O(N_logN)
+    // {  sort(arr,arr+N);
+    //   unordered_map<int,int>m;
+    //   int res=1;
+    //   for(int i=0;i<N;++i)
+    //   {  if(m.find(arr[i]-1)!=m.end())
+    //         m[arr[i]]=m[arr[i]-1]+1;
+    //       else
+    //         m[arr[i]]=1;
+    //       res=max(res,m[arr[i]]);
+    //   }
+    //   return res;
+    // }
+    // int findLongestConseqSubseq(int arr[], int N) // Time Complexity: O(K) :-    k=1e5
+    // {   int n=1e5;
+    //     vector<int>v(n+5,0);
+    //     int mx=INT_MIN;
+    //     for(int i=0;i<N;++i)
+    //      {  v[arr[i]]=1;
+    //         mx=max(mx,arr[i]);
+    //      } 
+    //     mx=max(mx,N);
+    //     int res=0;
+    //     for(int i=1;i<=mx;++i)
+    //     {   if(v[i]==0)
+    //           continue;
+    //         else if(v[i-1]!=0)
+    //           v[i]=1+v[i-1];
+    //       res=max(res,v[i]);
+    //     }
+    //     return res;
+    // }
+    int findLongestConseqSubseq(int arr[], int N) // Time Complexity: O(N)  Space Complexity: O(N)
+    {   unordered_set<int>s;
+        for(int i=0;i<N;++i)
+          s.insert(arr[i]);
+        int res=1;
+        for(int i=0;i<N;++i)
+        {  if(s.find(arr[i]-1)==s.end())// curr element is starting element in the sequence
+            {   int val=0;
+                while(s.find(arr[i]+val)!=s.end())
+                    ++val;
+                res=max(res,val);
+            }
+        }
+        return res;
+    }
+};
