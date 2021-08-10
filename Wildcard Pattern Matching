@@ -1,0 +1,44 @@
+class Solution{
+  public:
+  int fun(int i,int j,string &p,string &s,vector<vector<int>>&t)
+   {   if(j==s.size())
+         {
+             for(int k=i;k<p.size();++k)
+             {  if(p[k]!='*')
+                  return 0;
+             }
+             return 1;
+         }
+       if(i==p.size() || j==s.size())
+         return 0;
+       if(t[i][j]!=-1)
+        return t[i][j];
+       if(i==p.size()-1 && p[i]=='*')
+         return t[i][j]=1;
+       if(p[i]==s[j] || p[i]=='?')
+         return t[i][j]=fun(i+1,j+1,p,s,t);
+       if(p[i]=='*')
+       {  
+           for(int k=j;k<s.size();++k)
+            {  if(fun(i+1,k,p,s,t)==1)
+                    return t[i][j]=1;
+            }
+            return t[i][j]=0;
+       }
+       if(p[i]!=s[j])
+        return t[i][j]=0;
+   }
+  int wildCard(string pattern,string str)   // Time Complexity: O(m*n)   Space Complexity: O(m*n)
+    {   string s="";
+        s.push_back(pattern[0]);
+        for(int i=1;i<pattern.size();++i)
+        {  if(pattern[i]=='*' && pattern[i-1]=='*')
+               continue;
+           else
+             s.push_back(pattern[i]);
+        }
+        int m=s.size(),n=str.size();
+        vector<vector<int>>t(m,vector<int>(n,-1));
+        return fun(0,0,s,str,t);
+    }
+};
