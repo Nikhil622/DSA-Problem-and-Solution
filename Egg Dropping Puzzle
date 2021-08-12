@@ -1,0 +1,22 @@
+class Solution    // Time Complexity : O(N*K)   Space Complexity : O(N*K)
+{   public:
+    int fun(int e,int f,vector<vector<int>>&t) 
+     { 
+         if(e==1)
+          return f;
+         if(f==0 || f==1)
+           return f;
+         if(t[e][f]!=-1)
+          return t[e][f];
+         int res=INT_MAX;
+         for(int k=1;k<=f;++k)
+         {
+            res=min(res,1+max(fun(e-1,k-1,t),fun(e,f-k,t)));
+         }
+         return t[e][f]=res;
+     }
+    int eggDrop(int e, int f) 
+    {   vector<vector<int>>t(e+1,vector<int>(f+1,-1));
+        return fun(e,f,t);
+    }
+};
