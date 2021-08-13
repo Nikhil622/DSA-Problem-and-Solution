@@ -1,0 +1,26 @@
+class Solution
+{   int n;
+    public:
+        // int fun(int idx,int prev,int hi[],int li[],vector<vector<int>>&t)
+        //  {   if(idx==n)
+        //       return 0;
+        //      if(t[prev][idx]!=-1)
+        //       return t[prev][idx];
+        //      if(prev==0)
+        //       return t[prev][idx]=max(hi[idx]+fun(idx+1,1,hi,li,t),fun(idx+1,0,hi,li,t));
+        //      else
+        //       return t[prev][idx]=max(li[idx]+fun(idx+1,1,hi,li,t),fun(idx+1,0,hi,li,t));
+        //  }
+        
+        int maxAmt(int n , int hi[] , int li[])
+        { this->n=n;
+          vector<vector<int>>t(2,vector<int>(n+1,-1));
+          t[0][n]=0;
+          t[1][n]=0;
+          for(int i=n-1;i>=0;--i)
+          {  t[0][i]=max(hi[i]+t[1][i+1],t[0][i+1]);
+             t[1][i]=max(li[i]+t[1][i+1],t[0][i+1]);
+          }
+          return t[0][0];
+        }
+};
