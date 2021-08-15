@@ -1,0 +1,31 @@
+class Solution {
+  public:
+    bool isPallindrome(int i,int j,string &s)
+     {   while(i<=j)
+         {  if(s[i++]!=s[j--])
+               return false;
+         }
+         return true;
+     }
+    string longestPalin (string &s) {
+         int n=s.size(),res=1;
+         int x=-1,y=-1;
+         for(int i=0;i<n;++i)
+         {  for(int j=i+1;j<n;++j)
+             {  if(s[i]!=s[j])
+                  continue;
+                else
+                {  if(res<(j-i+1))
+                    {  if(isPallindrome(i,j,s)==true)
+                        {  x=i; y=j;
+                           res=(j-i+1);
+                        }
+                    }
+                }
+             }
+         }
+        if(x==-1)
+         return s.substr(0,1);
+        return s.substr(x,y-x+1);
+    }
+};
