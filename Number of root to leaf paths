@@ -1,0 +1,16 @@
+void fun(Node* root,int x,map<int,int>&m)
+ {   if(root==NULL)
+       return;
+     if(root->left==NULL && root->right==NULL)
+     {   m[x]++;
+         return;
+     }
+     fun(root->left,x+1,m);
+     fun(root->right,x+1,m);
+ }
+void pathCounts(Node *root)
+{  map<int,int>m;
+   fun(root,1,m);
+   for(auto x:m)
+      cout<<x.first<<" "<<x.second<<" $";
+}
