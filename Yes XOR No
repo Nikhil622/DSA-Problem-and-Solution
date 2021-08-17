@@ -1,0 +1,20 @@
+class Solution {
+  public:
+    string yesXorNo(int N, long long A[], long long B[]) {
+        return "Yes";
+      }
+};
+
+Explanation: 
+
+    The Primary Thing to observe in this problem is that,
+    a xor b = c
+    then a xor c= b
+    Also, b xor c = a
+
+    So If whenever we xor any element from Array A and Array B.
+    If its result C is present in the array.....Then surely, we would encounter xoring of a with c...and surely its result will also be present in the array.
+    That would make its count even for sure...Basically, Xors occurs in Pairs, always.
+
+    If the result of xoring is not present in the array.THen we dont need to worry, as then we are not counting that pair.
+    So, Answer will always be a Yes, irrespective of the input.
