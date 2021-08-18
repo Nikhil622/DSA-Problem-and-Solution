@@ -1,0 +1,77 @@
+// bool isPallindrome(string &s)
+    //  {  int l=0,r=s.size()-1;
+    //     while(l<=r)
+    //     {  if(s[l++]!=s[r--])
+    //          return false;
+    //     }
+    //     return true;
+    //  }
+    // void fun(int i,int j,int &res,string &s,vector<vector<char>>&grid)
+    //  {   if(i==grid.size()-1 && j==grid[0].size()-1)
+    //       {    s.push_back(grid[i][j]);
+    //           if(isPallindrome(s)==true)
+    //               ++res; 
+    //           s.pop_back();
+    //       }
+    //       static int a[]={0,1};
+    //       static int b[]={1,0};
+    //       s.push_back(grid[i][j]);
+    //       for(int k=0;k<2;++k)
+    //       {  int x=i+a[k],y=j+b[k];
+    //          if(x<grid.size() && y<grid[0].size())
+    //             fun(x,y,res,s,grid);
+    //       }
+    //      s.pop_back();
+    //  }
+    //  int countPalindromicPaths(vector<vector<char>>matrix)  // TIME Complexity: O(2^n) : Simple Recursive Solution: Checking All Paths (0,0) to (m-1,n-1) 
+    //     {                                                                                  // m: rows  and   n: columns
+    //         int res=0;
+    //         string s="";
+    //         fun(0,0,res,s,matrix,t);
+    //        return res;
+    //    }
+    
+    
+    
+    
+    
+    
+
+class Solution {
+  public:
+    int fun(int i,int j,int x,int y,vector<vector<char>>&grid,unordered_map<string,int>&t) // Solution we travel from both end
+     {    
+          if(x<i || y<j)                         // Such path is not possible : as (i,j) and (x,y) will never meet  -> (i,j):goes downward and (x,y):goes upward
+            return 0;
+          if(grid[i][j]!=grid[x][y])
+            return 0;
+          string s=to_string(i)+" "+to_string(j)+" "+to_string(x)+" "+to_string(y);
+          if(t.find(s)!=t.end())                 // if already computed then return the value
+            return t[s];
+          if(i==x && j==y)                       // Only 1 path possible of odd length
+             return t[s]=1;
+          if(i+1==x && j+1==y)                   // 2 paths possible : (i,j) and (x,y) are diagonal to eachother
+             return t[s]=2;
+          if((i==x && j+1==y) || (i+1==x && j==y))    // 1 path is possible : (i,j) and (x,y) cells are adjacent to eachother
+             return t[s]=1;
+          static int a[]={0,1};
+          static int b[]={1,0};
+          static int c[]={0,-1};
+          static int d[]={-1,0};
+         int res=0;
+         for(int k=0;k<2;++k)
+          { if(i+a[k]<grid.size() && j+b[k]<grid[0].size())
+                {   for(int n=0;n<2;++n)
+                    { if(0<=x+c[n] && 0<=y+d[n] && grid[i+a[k]][j+b[k]]==grid[x+c[n]][y+d[n]])
+                         res+=fun(i+a[k],j+b[k],x+c[n],y+d[n],grid,t);
+                      res=(res%1000000007);
+                    }
+                }
+          }
+         return t[s]=res;
+     }
+    int countPalindromicPaths(vector<vector<char>>matrix){
+       unordered_map<string,int>t;
+       return fun(0,0,matrix.size()-1,matrix[0].size()-1,matrix,t);
+    }
+};
