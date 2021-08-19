@@ -1,0 +1,16 @@
+class Solution {
+  public:
+    //Function to return maximum path sum from any node in a tree.
+    int fun(Node* root,int &res)
+     {  if(root==NULL)
+          return 0;
+        int x=fun(root->left,res),y=fun(root->right,res);
+        res=max(res,max(root->data,max(root->data+x+y,root->data+max(x,y)))); // max path starting from the curr root : 1.root  2.root+left+right  3.root+max(left,right)
+        return max(root->data,root->data+max(x,y));
+     }
+    int findMaxSum(Node* root)
+    {  int res=INT_MIN;
+       int x=fun(root,res);
+       return res;
+    }
+};
