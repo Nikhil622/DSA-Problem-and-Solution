@@ -1,0 +1,12 @@
+class Solution {
+  public:
+    void mirror(Node* root) {
+         if(root==NULL)
+          return;
+         Node* x=root->left,*y=root->right;
+         mirror(root->left);
+         mirror(root->right);
+         root->left=y;
+         root->right=x;
+    }
+};
