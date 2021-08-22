@@ -1,0 +1,22 @@
+class Solution {
+  public:
+    // int fun(int idx,vector<int>&v,vector<int>&t)
+    //  {   if(v.size()<=idx)
+    //       return 0;
+    //      if(t[idx]!=-1)
+    //       return t[idx];
+    //      return t[idx]=v[idx]+min(fun(idx+1,v,t),fun(idx+2,v,t));
+    //  }
+    // int minCostClimbingStairs(vector<int>&cost ,int n) {
+    //      vector<int>t(n,-1);
+    //      int x= fun(0,cost,t);
+    //      return min(t[0],t[1]);
+    // }
+    
+    int minCostClimbingStairs(vector<int>&cost ,int n) 
+    {
+        for(int i=2;i<n;++i)
+          cost[i]=(cost[i]+min(cost[i-1],cost[i-2]));
+        return cost[n-1];
+    }
+};
