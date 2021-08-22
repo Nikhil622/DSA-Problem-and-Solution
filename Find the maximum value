@@ -1,0 +1,16 @@
+class Solution
+{
+    public:
+    int max_val(int a[], int n)
+    {   int res=INT_MIN;
+        int l=0,r=n-1;
+        while(l<r)
+        {   res=max(res,(r-l)*min(a[l],a[r]));
+            if(a[l]<a[r])
+              ++l;
+            else
+             --r;
+        }
+        return res;
+    }
+};
