@@ -1,0 +1,61 @@
+/* If stack is empty : We push_element x to the stack :  and set minEle=x
+   If we push element to the stack :  
+     Case 1:- If minEle<=x   =>  We push element to the stack directly.
+     Case 2:  x<minEle   =>  Instead pushing element x to the stack => We push (2*curr_min- prev_min) to the stack  and  update  minEle=x
+              0 > x-minEle
+              x > 2*x - minEle
+   If we pop element x from the stack
+    Case 1:  If  minEle<=x   => Directly return x :- Minium element will still be present in the stack
+    Case 2:   x<minEle : This is the indication that : At this point minEle present in the stack changes  
+              int n=minEle
+              x=(2*minEle- prev_min) // We have stored  this way
+              minEle = 2*minEle-x (prev_Min)
+              return n   ( we have stored x(2*curr_Min-prev_Min)  instead of n
+              
+*/
+
+class _stack{
+stack<int> s;
+int minEle;
+public :
+    int getMin();
+    int pop();
+    void push(int);
+};
+
+
+int _stack :: getMin()
+{  if(s.empty()==true)
+     return -1;
+   return minEle;
+}
+
+/*returns poped element from stack*/
+int _stack ::pop()
+{   if(s.empty()==true)
+      return -1;
+    int n=s.top();
+    int x=minEle;
+    s.pop();
+    if(n<minEle)
+    {  minEle=2*minEle-n;
+       n=x;
+    }
+    return n;
+}
+
+/*push element x into the stack*/
+void _stack::push(int x)
+{   if(s.empty()==true)
+     { s.push(x);
+       minEle=x;
+     }
+    else
+    {  if(minEle<=x)
+         s.push(x);
+       else
+       {  s.push(2*x-minEle);
+          minEle=x;
+       }
+    }
+}
