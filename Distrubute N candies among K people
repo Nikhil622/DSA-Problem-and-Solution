@@ -1,0 +1,17 @@
+class Solution {
+  public:
+    vector<long long> distributeCandies(int n,int k) {
+         vector<long long> v(k,0);
+         int i=0;
+         int val=1;
+         while(val<=n)
+         {  n=n-val;
+            v[i]=v[i]+val;
+            ++i; 
+            ++val;
+            i=(i%k);
+         }
+        v[i]=v[i]+n;
+        return v;
+    }
+};
