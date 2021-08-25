@@ -1,0 +1,32 @@
+class Solution{
+  public:
+	int fun(int i,int j,vector<vector<int>>&grid,vector<vector<int>>&t)
+	 {  if(i==grid.size()-1 && j==grid[0].size()-1)
+	      {  if(grid[i][j]<0)
+	             return -grid[i][j];
+	         else
+	          return 0;
+	      }
+	    if(t[i][j]!=-1)
+	       return t[i][j];
+	    static int a[]={0,1};
+	    static int b[]={1,0};
+	    int res=INT_MAX;
+	    for(int k=0;k<2;++k)
+	    {  int x=i+a[k],y=j+b[k];
+	       if(x<grid.size() && y<grid[0].size())
+	         {  
+	             res=min(res,-(grid[i][j]-fun(x,y,grid,t)));
+	         }
+	    }
+	    if(0<=res)
+	      return t[i][j]=res;
+	   else
+	     return t[i][j]=0;
+	 }
+	 
+	int minPoints(vector<vector<int>> grid, int m, int n) // m:rows and n:columns
+	{  vector<vector<int>>t(m,vector<int>(n,-1));
+	   return 1+fun(0,0,grid,t);
+	} 
+};
