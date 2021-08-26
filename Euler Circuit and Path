@@ -1,0 +1,40 @@
+class Solution {
+    
+public:
+    void fun(int s,vector<bool>&visited,vector<int>*adj)
+      {    visited[s]=true;
+           for(int x:adj[s])
+             {  if(visited[x]==false)
+                    fun(x,visited,adj);
+             }
+      }
+	int isEularCircuit(int v, vector<int>adj[]){
+	    vector<bool>visited(v,false);
+	    int connected=0,count=0;
+	    for(int i=0;i<v;++i)
+	    {  if(visited[i]==false && adj[i].size()>0)
+	         { ++connected;
+	           fun(i,visited,adj);
+	         }
+	       if(adj[i].size()==0)
+	         ++count;
+	    }
+	    if(1<connected)
+	      return 0;
+	    int odd=0,even=0;
+	    for(int i=0;i<v;++i)
+	    {  if(adj[i].size()==0)
+	         continue;
+	       if(adj[i].size()%2==0)
+	         ++even;
+	       else
+	         ++odd;
+	    }
+	   if(v-count==even)
+	     return 2;
+	   else if(odd==0 || odd==2)
+	     return 1;
+	   else
+	     return 0;
+     }
+};
