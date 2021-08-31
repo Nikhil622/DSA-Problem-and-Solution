@@ -1,0 +1,59 @@
+class Solution {
+    string res;
+public:
+    int fun(int idx,string& s,vector<int>&t,unordered_map<int,set<int>>&v,vector<string>&vt,unordered_set<string>&m)
+    {   if(idx==s.size())
+        {  vt.push_back(res);
+           return 1;
+        }
+       if(t[idx]==0)
+           return 0;
+       if(t[idx]==1)
+       {   int k=idx,l=res.size();
+           if(0<res.size())
+               res+=" ";
+           for(int x:v[idx])
+           {  
+              for(k;k<=x;++k)
+               res+=s[k];
+              int val=fun(k,s,t,v,vt,m);
+           }
+          while(l<res.size())
+              res.pop_back();
+         return 1;
+       }
+       string x="";
+       for(int i=idx;i<s.size();++i)
+       {  x+=s[i];
+          if(m.find(x)!=m.end())
+          {   int l=res.size();
+              if(0<res.size())
+                res+=" ";
+              res+=x;
+              int val=fun(i+1,s,t,v,vt,m);
+              if(val==1)
+              {  t[idx]=1;
+                 v[idx].insert(i);
+              }
+             while(l<res.size())
+                 res.pop_back();
+          }
+       }
+      if(t[idx]!=-1)
+           return t[idx];
+       else
+           return t[idx]=0;
+    }
+    vector<string> wordBreak(string s, vector<string>& dict) {
+        int n=s.size();
+        this->res="";
+        unordered_map<int,set<int>>v;
+        vector<string>vt;
+        vector<int>t(n,-1);
+        unordered_set<string>m;
+        for(auto &x:dict)
+            m.insert(x);
+        int val=fun(0,s,t,v,vt,m);
+        return vt;
+    }
+};
