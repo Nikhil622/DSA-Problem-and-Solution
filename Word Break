@@ -1,0 +1,27 @@
+class Solution
+{
+    public:  // Time Complexity: O(n*n)   Space Complexity: O(n)
+    int fun(int idx,string&A,unordered_set<string>&s,vector<int>&t)
+      {    if(idx==A.size())
+              return 1;
+           if(t[idx]!=-1)
+             return t[idx];
+           string x="";
+           for(int i=idx;i<A.size();++i)
+            {   x+=A[i];
+                if(s.find(x)!=s.end())
+                 {  if(fun(i+1,A,s,t)==1)
+                       return t[idx]=1;
+                 }
+            }
+          return t[idx]=0;
+      }
+    int wordBreak(string A, vector<string> &B) {
+        unordered_set<string>s;
+        int n=A.size();
+        for(auto x:B)
+          s.insert(x);
+        vector<int>t(n,-1);
+        return fun(0,A,s,t);
+    }
+};
