@@ -1,0 +1,51 @@
+struct trie{
+    char x;
+    bool isWord;
+    trie* child[26];
+    trie(char a)
+     {  x=a;
+        isWord=false;
+        for(int i=0;i<26;++i)
+          child[i]=NULL;
+     }
+};
+
+void insert(trie* root,string &s)
+  {   trie * curr=root;
+      for(auto x:s)
+      {  if(curr->child[x-'a']==NULL)
+            curr->child[x-'a']=new trie(x);
+         curr=curr->child[x-'a'];
+      }
+      curr->isWord=true;
+  }
+class Solution{
+    public:
+    int fun(int idx,string &s,trie* root,vector<int>&t)
+     {    if(idx==s.size())
+            return 1;
+          if(t[idx]!=-1)
+            return t[idx];
+          trie* curr=root;
+          string x="";
+          for(int i=idx;i<s.size();++i)
+          {   x+=s[i];
+              if(curr->child[s[i]-'a']==NULL)
+                 return t[idx]=0;
+              curr=curr->child[s[i]-'a'];
+              if(curr->isWord==true)
+              {  int val=fun(i+1,s,root,t);
+                 if(val==1)
+                   return t[idx]=1;
+              }
+          }
+          return t[idx]=0;
+     }
+    int wordBreak(string A, vector<string> &B){
+         trie* root=new trie('*');
+         for(auto &x:B)
+          insert(root,x);
+         vector<int>t(A.size(),-1);
+        return fun(0,A,root,t);
+    }
+};
