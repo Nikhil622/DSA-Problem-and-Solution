@@ -1,0 +1,27 @@
+class Solution {
+	public:
+	    int fun(int idx,int prev,int val,vector<int>&v,vector<vector<int>>&t)
+	     {   if(idx==v.size())
+	            return 0; 
+	         if(t[val][idx]!=-1)
+	           return t[val][idx];
+	         if(val==1) // greator element than prev element required
+	         {   if(prev<v[idx])
+	                return t[val][idx]=(1+fun(idx+1,v[idx],0,v,t));
+	             else //if(v[idx]<prev)
+	                return t[val][idx]=fun(idx+1,v[idx],1,v,t);
+	         }
+	         else  // smaller element than prev element required
+	         {  
+              if(v[idx]<prev)
+	               return t[val][idx]=(1+fun(idx+1,v[idx],1,v,t));
+	            else      //if(prev<v[idx])
+	                return t[val][idx]=fun(idx+1,v[idx],0,v,t);
+	         }
+	     }
+		int ZigZagMaxLength(vector<int>&nums){
+		     vector<vector<int>>t(2,vector<int>(nums.size(),-1));
+		     return max(fun(0,INT_MIN,1,nums,t),fun(0,INT_MAX,0,nums,t));
+		}
+
+};
