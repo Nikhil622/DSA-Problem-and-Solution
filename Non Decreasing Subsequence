@@ -1,0 +1,29 @@
+class Solution{
+    int n;
+	public:
+	int fun(int idx,int k,int prev,int a[],vector<vector<int>>&t)
+	 {  if(k==0)
+	       return 0;
+	    if(idx==n)
+	      return INT_MAX;
+	    if(t[k][idx]!=-1)
+	      return t[k][idx];
+	    int sum=INT_MAX;
+	    for(int i=idx;i<n;++i)
+	     {   if(prev<=a[i])
+	           {   int x=fun(i+1,k-1,a[i],a,t);
+	               if(x!=INT_MAX)
+	                  sum=min(sum,a[i]+x);
+	           }
+	     }
+	    return t[k][idx]=sum;
+	 }
+	int minSum(int arr[], int N, int k) 
+	{   this->n=N;
+	    vector<vector<int>>t(k+1,vector<int>(N,-1));
+	    int x=fun(0,k,INT_MIN,arr,t);
+	    if(x==INT_MAX)
+	     return -1;
+	    return x;
+	} 
+};
