@@ -1,0 +1,46 @@
+class Solution{ 
+public:
+    
+    // long long fun(int curr,int copied,int n,unordered_map<string,long long>&m)
+    // {   if(n<3)
+    //      {  if(copied!=-1)
+    //           return n*copied+curr;
+    //         else
+    //           return n+curr;
+    //      }
+    //     string x=to_string(curr)+" "+to_string(copied)+" "+to_string(n);
+    //     if(m.find(x)!=m.end())
+    //       return m[x];
+    //     if(copied!=-1)
+    //       return  m[x]=max(fun(curr+copied,copied,n-1,m),fun(2*curr,curr,n-3,m));
+    //     else 
+    //       return m[x]=max(fun(curr+1,-1,n-1,m),fun(2*curr,curr,n-3,m));
+    // }
+    // long long int optimalKeys(int n){
+    //     static vector<long long>t(mx,-1);
+    //     unordered_map<string,long long>m;
+    //     if(t[n]!=-1)
+    //       return t[n];
+    //     return t[n]=fun(1,-1,n-1,m);
+    // }
+    
+    long long int max(long long int x,long long int y)
+    {  if(x<y)
+         return y;
+       return x;
+    }
+    long long int fun(int n,vector<long long int>&t)
+      {   if(n<=6)
+             return t[n]=n;
+          if(t[n]!=-1)
+            return t[n];
+          long long int ans=n;
+          for(int i=1;i<n-2;++i)
+            ans=max(ans,fun(i,t)*(n-i-1));
+         return t[n]=ans;
+      }
+    long long int optimalKeys(int n){
+          vector<long long int>t(n+1,-1);
+          return fun(n,t);
+     }
+};
