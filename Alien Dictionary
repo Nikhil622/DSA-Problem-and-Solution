@@ -1,0 +1,35 @@
+class Solution{
+    public:
+    void fun(int s,vector<char>*adj,vector<bool>&visited,stack<char>&st)
+      {   visited[s]=true;
+          for(auto x:adj[s])
+            {  if(visited[x-'a']==false)
+                fun(x-'a',adj,visited,st);
+            }
+         st.push(s+'a');
+      }
+    string findOrder(string dict[], int N, int K) {
+         vector<char>adj[K];
+         for(int i=0;i<N-1;++i)
+         {  int x=min(dict[i].size(),dict[i+1].size());
+            for(int j=0;j<x;++j)
+             {  if(dict[i][j]!=dict[i+1][j])
+                  {  adj[dict[i][j]-'a'].push_back(dict[i+1][j]);
+                     break;
+                  }
+             }
+         }
+        stack<char>st;
+        vector<bool>visited(K,false);
+        for(int i=0;i<K;++i)
+        { if(visited[i]==false)
+              fun(i,adj,visited,st);
+        }
+        string res="";
+        while(st.empty()==false)
+        {  res.push_back(st.top());
+           st.pop(); 
+        }
+        return res;
+    }
+};
