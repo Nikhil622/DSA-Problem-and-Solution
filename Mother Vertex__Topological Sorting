@@ -1,0 +1,34 @@
+class Solution 
+{   int val;
+    public:
+    int solve(int s,vector<bool>&visited,vector<int>adj[]) // Total nodes that can be visited from node s
+     {  visited[s]=true;
+        int res=1;
+        for(int x:adj[s])
+        { if(visited[x]==false)
+            res+= solve(x,visited,adj);
+        }
+        return res;
+     }
+    void fun(int s,vector<bool>&visited,stack<int>&st,vector<int>adj[])  // Topological Sorting
+     {  visited[s]=true;
+        for(int x:adj[s])
+        {  if(visited[x]==false)
+            fun(x,visited,st,adj);
+        }
+        st.push(s);
+    }
+    int findMotherVertex(int v, vector<int>adj[])
+	{  vector<bool>visited(v,false);
+	   stack<int>st;
+	   for(int i=0;i<v;++i)
+	   {  if(visited[i]==false)
+	        fun(i,visited,st,adj);
+	   }
+	  for(int i=0;i<v;++i)
+	    visited[i]=false;
+	  if(solve(st.top(),visited,adj)<v)
+	    return -1;
+	  return st.top();
+	}
+};
