@@ -1,0 +1,62 @@
+// 	int fun(int n,vector<bool>&taken,vector<vector<int>>*adj) // O(n^3) Soln
+// 	  {   if(n==N)
+// 	        return 0;
+// 	      int res=INT_MAX,node=-1;
+// 	      for(int i=0;i<N;++i)
+// 	       { if(taken[i]==true)
+// 	           {  for(auto x:adj[i])
+// 	               {  if(taken[x[0]]==false && x[1]<res)
+// 	                     {  res=x[1];
+// 	                        node=x[0];
+// 	                     }
+// 	               }
+// 	           }
+// 	       }
+// 	     taken[node]=true;
+// 	     return res+fun(n+1,taken,adj);
+// 	  }
+//     int spanningTree(int v, vector<vector<int>> adj[])
+//     {  this->N=v;
+//       vector<bool>visited(v,false);
+//       visited[0]=true;
+//       return fun(1,visited,adj);
+//     }
+
+
+struct Edge{
+    int x,y,l;
+    Edge(int a,int b,int c)  
+    {  
+        x=a,y=b,l=c;
+    }
+};
+bool operator<(const Edge &a,const Edge &b) // Compare Function for Priority_queue
+    {
+        return a.l>b.l;
+    }
+    
+class Solution
+{  
+    public:
+      int spanningTree(int v, vector<vector<int>> adj[])
+          {   vector<bool>taken(v,false);
+              priority_queue<Edge>pq;
+              int res=0;
+              pq.push(Edge(0,-1,0));
+              for(int i=0;i<v;++i)
+              {  while(pq.empty()==false)
+                  {  auto e=pq.top();
+                     pq.pop();
+                     if(taken[e.x]==false)
+                      { taken[e.x]=true;
+                        res+=e.l;
+                        for(auto v:adj[e.x])
+                         {   if(taken[v[0]]==false)
+                              pq.push(Edge(v[0],e.x,v[1]));
+                         }
+                      }
+                  }
+              }
+              return res;
+          }
+};
