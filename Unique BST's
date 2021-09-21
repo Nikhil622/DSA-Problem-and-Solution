@@ -1,0 +1,21 @@
+class Solution
+{
+    public:
+    //Function to return the total number of possible unique BST. 
+    long long int fun(int n,vector<long long int>&v)
+     {  if(n==0 || n==1)
+          return 1;
+        if(v[n]!=-1)
+          return v[n];
+        long long int res=0;
+        for(int i=1;i<=n;++i)
+        {
+            res+=(fun(i-1,v)*fun(n-i,v))%1000000007;
+        }
+        return v[n]=(res%(1000000007));
+     }
+    int numTrees(int N) 
+    {   vector<long long int>v(N+1,-1);
+        return (int)fun(N,v);
+    }
+};
