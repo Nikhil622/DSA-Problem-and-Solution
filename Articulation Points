@@ -1,0 +1,41 @@
+class Solution {
+    int t;
+  public:
+    // p: parent
+    void fun(int s,int p,vector<int>&disc,vector<int>&low,vector<bool>&ans,vector<int>adj[])
+     {   disc[s]=t;
+         low[s]=t++;
+         int child=0;
+         for(int x:adj[s])
+         {  if(disc[x]==-1)
+             {  ++child;
+                fun(x,s,disc,low,ans,adj);
+                low[s]=min(low[s],low[x]);
+                if(p!=-1 && disc[s]<=low[x])
+                  ans[s]=true;
+             }
+            else if(x!=p) // Then only it will be a backEdge
+              low[s]=min(low[s],disc[x]);
+         }
+        if(p==-1 && 1<child)
+            ans[s]=true;
+     }
+    vector<int> articulationPoints(int v, vector<int>adj[]) {
+        vector<int>disc(v,-1);
+        vector<int>low(v,-1);
+        vector<bool>ans(v,false);
+        this->t=0;
+        for(int i=0;i<v;++i)
+        { if(disc[i]==-1)
+            fun(i,-1,disc,low,ans,adj);
+        }
+       vector<int>res;
+       for(int i=0;i<v;++i)
+         {  if(ans[i]==true)
+              res.push_back(i);
+         }
+       if(0<res.size())
+         return res;
+       return {-1};
+    }
+};
