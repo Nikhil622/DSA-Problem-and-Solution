@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool isValid(int s,int k,vector<int>&color,vector<int>adj[])
+ {  for(int x:adj[s])
+     {  if(color[x]==k)
+          return false;
+     }
+    return true;
+ }
+bool solve(int s,vector<int>&color,vector<int>adj[])
+ {   
+     for(int k=1;k<=2;++k)
+     {  if(isValid(s,k,color,adj)==true)
+         {  color[s]=k;
+            bool flag=true;
+            for(int x:adj[s])
+            {  if(color[x]==-1)
+                 {  if(solve(x,color,adj)==false)
+                     {    flag=false;
+                          break;
+                     }
+                 }
+            }
+            if(flag==true)
+              return true;
+         }
+     }
+    color[s]=-1;
+    return false;
+ }
+string fun(int n,vector<int>adj[])
+  {  vector<int>color(n,-1);
+     for(int i=0;i<n;++i)
+      {  if(color[i]==-1)
+          {  if(solve(i,color,adj)==false)
+                return "no";
+          }
+      }
+     return "yes";
+  }
+int main() {
+    int t;
+    cin>>t;
+    while(t--)
+    {  int n,m;
+       cin>>n>>m;
+       vector<int>adj[n];
+       for(int i=0;i<m;++i)
+        {  int u,v;
+           cin>>u>>v;
+           adj[v-1].push_back(u-1);
+           adj[u-1].push_back(v-1);
+        }
+       cout<<fun(n,adj)<<endl;
+    }
+	return 0;
+}
