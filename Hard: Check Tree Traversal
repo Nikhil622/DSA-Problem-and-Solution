@@ -1,0 +1,42 @@
+struct Node{
+    int data;
+    Node* left,*right;
+    Node(int x)
+    {  left=right=NULL;
+       data=x; 
+    }
+};
+class Solution{
+    public:
+    void fun(Node* &root,int &idx,int l,int r,int *pre,unordered_map<int,int>&m)
+     {   if(idx==m.size() || r<l)
+           return ;
+         int k=idx;
+         root=new Node(pre[idx++]);
+         fun(root->left,idx,l,m[pre[k]]-1,pre,m);
+         fun(root->right,idx,m[pre[k]]+1,r,pre,m);
+     }
+    void solve(Node* root,vector<int>&v)
+     {  if(root==NULL)
+          return;
+        solve(root->left,v);
+        solve(root->right,v);
+        v.push_back(root->data);
+     }
+    bool checktree(int preorder[], int inorder[], int postorder[], int n) 
+    {   unordered_map<int,int>m;
+        for(int i=0;i<n;++i)
+           m[inorder[i]]=i;
+        Node* root=NULL;
+        int idx=0;
+        fun(root,idx,0,n-1,preorder,m);
+        vector<int>v;
+        solve(root,v);
+        for(int i=0;i<n;++i)
+        {  if(v[i]!=postorder[i])
+             return false;
+        }
+        return true;
+    } 
+
+};
