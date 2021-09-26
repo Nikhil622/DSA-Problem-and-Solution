@@ -1,0 +1,22 @@
+class Solution{
+public:
+	int search(string pat, string txt) {
+	    vector<int>x(256,0),y(256,0);
+	    int  m=pat.size(),n=txt.size();
+	    for(int i=0;i<m;++i)
+	    {  x[pat[i]]++;
+	       y[txt[i]]++;
+	    }
+	    int res=0;
+	    if(x==y)
+	     ++res;
+	    for(int i=m;i<n;++i)
+	    { y[txt[i-m]]--;
+	      y[txt[i]]++;
+	      if(x==y)
+	        ++res;
+	    }
+	    return res;
+	}
+
+};
