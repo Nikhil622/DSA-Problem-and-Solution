@@ -1,0 +1,19 @@
+class Solution{
+  public:
+    /*You are required to complete below method */
+    int evalTree(node* root) {
+       if(root==NULL)
+          return 0;
+       if(root->left==NULL && root->right==NULL)
+         return stoi(root->data);
+       int x=evalTree(root->left),y=evalTree(root->right);
+       if(root->data[0]=='*')
+         return x*y;
+       else if(root->data[0]=='/')
+         return x/y;
+       else if(root->data[0]=='+')
+         return x+y;
+       else
+         return x-y;
+    }
+};
