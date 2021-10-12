@@ -1,0 +1,31 @@
+class Solution {
+public:
+    void fun(int i,int j,int val,vector<vector<bool>>&t,vector<vector<int>>&grid)
+    {    static int a[]={-1,1,0,0};
+         static int b[]={0,0,-1,1};
+         t[i][j]=true;
+         for(int k=0;k<4;++k)
+         {  int x=i+a[k],y=j+b[k];
+            if(x>=0 && x<t.size() && y>=0 && y<t[0].size() && abs(grid[x][y]-grid[i][j])<=val && t[x][y]==false)
+               fun(x,y,val,t,grid);
+         }
+    }
+    int minimumEffortPath(vector<vector<int>>&grid) {
+        int m=grid.size(),n=grid[0].size();
+        vector<vector<bool>>t(m,vector<bool>(n,false));
+        int l=0,r=1000000;
+        while(l<r)
+        {  for(int i=0;i<m;++i)
+            {  for(int j=0;j<n;++j)
+                  t[i][j]=false;
+            }
+          int mid=(l+r)/2;
+          fun(0,0,mid,t,grid);
+          if(t[m-1][n-1]==true)
+            r=mid;
+          else
+            l=mid+1;
+        }
+        return l;
+    }
+};
