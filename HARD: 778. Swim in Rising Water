@@ -1,0 +1,32 @@
+class Solution {
+public:
+    void fun(int i,int j,int val,vector<vector<bool>>&t,vector<vector<int>>&grid)
+    {   static int a[]={-1,1,0,0};
+        static int b[]={0,0,-1,1};
+        t[i][j]=true;
+        for(int k=0;k<4;++k)
+        {  int x=i+a[k],y=j+b[k];
+           if(x>=0 && x<t.size() && y>=0 && y<t[0].size() && t[x][y]==false && (grid[x][y]<=val))
+               fun(x,y,val,t,grid);
+        }
+    }
+    int swimInWater(vector<vector<int>>& grid) {
+        int m=grid.size(),n=grid[0].size(); // m==n : Square Matrix
+        vector<vector<bool>>t(m,vector<bool>(n,false));
+        int l=grid[0][0],r=n*n;  //Let that val lie between [l,r]
+        int res=INT_MAX;
+        while(l<r)   // Binary Search
+        {   int mid=(l+r)/2;
+            fun(0,0,mid,t,grid);
+            if(t[m-1][n-1]==true)
+              r=mid; 
+            else
+              l=mid+1;
+            for(int i=0;i<m;++i)
+            {  for(int j=0;j<n;++j)
+                 t[i][j]=false;
+            }
+        }
+        return r;
+    }
+};
