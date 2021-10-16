@@ -1,0 +1,95 @@
+
+
+class Solution {
+  public:
+    void fun(int k,vector<int>&vt,vector<int>&v,vector<bool>&t,vector<vector<int>>&res)
+          {  if(k==v.size())
+              {   res.push_back(vt);
+                  return;
+               }
+             int prev=-1;
+             for(int i=0;i<v.size();++i)
+              {    if( t[i]==false && prev!=v[i] )
+                      {  t[i]=true;
+                         vt.push_back(v[i]);
+                         fun(k+1,vt,v,t,res);
+                         prev=v[i];
+                         vt.pop_back();
+                         t[i]=false;
+                  }
+              }
+      }
+    vector<vector<int>> uniquePerms(vector<int>&v ,int n)
+        {
+               this->root=new Trie();
+               vector<int>vt;
+               vector<vector<int>>res;
+               `vector<bool>t(10,false);`
+               sort(v.begin(),v.end());
+               fun(0,vt,v,t,res);
+               return res;
+      }
+};
+
+Above solution is best because unlike below solution we do not store unique vectors and check if vector after getting permutated is already stored in result array or not
+
+// struct Trie{
+//     Trie* child[10];
+//     bool isEnd;
+//     Trie()
+//     {  for(int i=0;i<10;++i)
+//           child[i]=NULL;
+//       isEnd=false;
+//     }
+// };
+
+// bool isFind(Trie* root,vector<int>&v)
+//   {   Trie* curr=root;
+//       for(int x:v)
+//       {  if(curr->child[x-1]==NULL)
+//              return false;
+//           curr=curr->child[x-1]; 
+//       }
+//       return true;
+//   }
+
+// void Insert(Trie* root,vector<int>&v)
+//  {  Trie* curr=root;
+//     for(int x:v)
+//       {  if(curr->child[x-1]==NULL)
+//             curr->child[x-1]=new Trie();
+//          curr=curr->child[x-1];
+//       }
+//     curr->isEnd=true;
+//  }
+// class Solution {
+//   Trie* root;
+//   public:
+//     void fun(int k,vector<int>&vt,vector<int>&v,vector<bool>&t,vector<vector<int>>&res)
+//       {  if(k==v.size())
+//           {  if(isFind(root,vt)==false)
+//                 {   res.push_back(vt);
+//                     Insert(root,vt);
+//                 }
+//               return;
+//           }
+//          for(int i=0;i<v.size();++i)
+//           {  if(t[i]==false)
+//               {  t[i]=true;
+//                  vt.push_back(v[i]);
+//                  fun(k+1,vt,v,t,res);
+//                  vt.pop_back();
+//                  t[i]=false;
+//               }
+//           }
+//       }
+//     vector<vector<int>> uniquePerms(vector<int>&v ,int n) {
+//          this->root=new Trie();
+//          vector<int>vt;
+//          vector<vector<int>>res;
+//          vector<bool>t(10,false);
+//          sort(v.begin(),v.end());
+//          fun(0,vt,v,t,res);
+//          return res;
+//     }
+// };
