@@ -1,0 +1,25 @@
+class Solution
+{   public:
+    pair<int,int> fun(int s,int x,vector<pair<int,int>>adj[])
+      {    if(adj[s].size()==0)
+             return {s,x};
+          return fun(adj[s][0].first,min(x,adj[s][0].second),adj); 
+      }
+    vector<vector<int>> solve(int n,int p,vector<int> a,vector<int> b,vector<int> d)
+    {   vector<pair<int,int>>adj[n];
+        vector<pair<int,int>>rev_adj[n];
+        for(int i=0;i<a.size();++i)
+         {     adj[a[i]-1].push_back({b[i]-1,d[i]});
+           rev_adj[b[i]-1].push_back({a[i]-1,d[i]});
+         }
+        vector<vector<int>>res;
+        int x=INT_MAX;
+        for(int i=0;i<n;++i)
+        { if(rev_adj[i].size()==0 && 0<adj[i].size())
+             {  auto x= fun(i,INT_MAX,adj);
+                res.push_back({i+1,x.first+1,x.second});
+             }
+        }
+       return res;
+    }
+};
