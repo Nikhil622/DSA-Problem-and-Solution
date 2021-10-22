@@ -1,0 +1,16 @@
+class Solution {
+    int res=0;
+public:
+    int fun(TreeNode* root)
+    {  if(root==NULL)
+          return 0;
+       int l=fun(root->left),r=fun(root->right);
+       res+=(abs(l)+abs(r));
+       return (root->val+l+r-1);
+    }
+    int distributeCoins(TreeNode* root){
+        this->res=0;
+        int x=fun(root);
+       return res;
+    }
+};
