@@ -1,0 +1,18 @@
+class Solution{
+	public:
+		int min_operations(vector<int>v){
+		    int n=v.size();
+		    int len=1;
+		    vector<int>LIS(n,1);
+		    for(int i=0;i<v.size();++i)
+		     {  for(int j=0;j<i;++j)
+		         {  if(v[j]<v[i] && (i-j)<=(v[i]-v[j]))  // let i-j =5  therefore v[i]-v[j] should be greator than equal 5 :-
+		               LIS[i]=max(LIS[i],1+LIS[j]);      //  Because there should fit 5 integer values from j+1 to i index which are between  [ v[j]+1,v[i] ]
+		         } 
+		        len=max(len,LIS[i]);
+		     }
+		    return n-len;
+		}
+};
+
+// Problem is Variation of LIS- Longest Increasing Subsequence
