@@ -1,0 +1,45 @@
+class Solution {
+  bool res;
+  int n;
+  public:
+    int fun(Node* root)
+     {  if(root==NULL)
+           return INT_MIN;
+        ++n;
+        int l=fun(root->left),r=fun(root->right);
+        res=(res&&(l<root->data && r<root->data));
+        return root->data;
+     }
+    bool isHeap(Node* root){
+        this->res=true;
+        this->n=0;
+        int x=fun(root);
+        if(res==false)
+          return false;
+        vector<Node*>res;
+        queue<Node*>q;
+        q.push(root);
+        res.push_back(root);
+        while(q.empty()==false)
+         {  auto x=q.front();
+            q.pop();
+            if(x->left!=NULL)
+              q.push(x->left);
+            if(x->right!=NULL)
+              q.push(x->right);
+            res.push_back(x->left);
+            res.push_back(x->right);
+         }
+        int i=0;
+        for(i;i<res.size();++i)
+         {  if(res[i]==NULL)
+              break;
+         }
+        i=i+1;
+        for(i;i<res.size();++i)
+          { if(res[i]!=NULL)
+             return false;
+          }
+        return true;
+    }
+};
