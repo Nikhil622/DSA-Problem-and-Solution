@@ -1,0 +1,49 @@
+struct Trie{
+    int t;
+    Trie* child[26];
+    Trie(int val)
+    {  t=val;
+       for(int i=0;i<26;++i)  
+         child[i]=NULL;
+    }
+};
+
+void Insert(Trie* root,string &s)
+ {   Trie* curr=root;
+     for(char x:s)
+       {  if(curr->child[x-'a']==NULL)
+             curr->child[x-'a']=new Trie(1);
+          else
+             ++curr->child[x-'a']->t;
+          curr=curr->child[x-'a'];
+       }
+ }
+ 
+string fun(Trie* root,string &s)
+ {  Trie* curr=root;
+    string str="";
+    for(auto x:s)
+     { if(curr->child[x-'a']->t==1)
+          {  str+=x;
+             break;
+          }
+        else
+          str+=x;
+        curr=curr->child[x-'a'];
+     }
+    return str;
+ }
+class Solution
+{
+    public:
+    vector<string> findPrefixes(string arr[], int n)
+    {   Trie* root=new Trie(2);
+        for(int i=0;i<n;++i)
+          Insert(root,arr[i]);
+        vector<string>res;
+        for(int i=0;i<n;++i)
+          res.push_back(fun(root,arr[i]));
+        return res;
+    }
+    
+};
