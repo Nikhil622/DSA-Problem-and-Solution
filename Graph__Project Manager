@@ -1,0 +1,36 @@
+class Solution{
+    public:
+    int minTime(vector<pair<int,int>> &dependency,int duration[],int n,int m) {
+       vector<int> adj[n];
+       vector<int>inEdge(n,0);
+       for(auto x:dependency)
+         {   adj[x.first].push_back(x.second);
+             inEdge[x.second]++;
+         }
+      vector<int>timeReq(n,0);
+      queue<int>q;
+      for(int i=0;i<n;++i)
+      {  if(inEdge[i]==0)
+          { timeReq[i]=duration[i];
+            q.push(i);
+          }
+      }
+      int t=0;
+      while(q.empty()==false)
+       {  auto p=q.front();
+          q.pop();
+          ++t;
+          for(int x:adj[p])
+          {   timeReq[x]=max(timeReq[x],duration[x]+timeReq[p]);
+              if(--inEdge[x]==0)
+                 q.push(x);
+          }
+       }
+      if(t<n)
+        return -1;
+      int res=INT_MIN;
+      for(int x:timeReq)
+         res=max(res,x);
+       return res;
+    }
+};
