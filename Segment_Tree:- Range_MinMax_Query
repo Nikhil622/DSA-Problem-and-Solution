@@ -1,0 +1,32 @@
+PII fun(int qs,int qe,int s,int e,int idx,PII* st)
+ {   if(qs>e || qe<s)
+       return {INT_MAX,INT_MIN};
+     if(qs<=s && e<=qe)
+       return st[idx];
+    int mid=getMid(s,e);
+    auto x=fun(qs,qe,s,mid,2*idx+1,st);
+    auto y=fun(qs,qe,mid+1,e,2*idx+2,st);
+    return {min(x.first,y.first),max(x.second,y.second)};
+ }
+PII getMinMax(PII *st, int *arr, int n, int qs, int qe)
+{     
+    return fun(qs,qe,0,n-1,0,st);
+}
+
+void solve(int idx,int val,int l,int r,int i,PII st[])
+  {      if(idx<l || r<idx)
+          return;
+        if(l==r)
+        {   st[i]={val,val};
+            return;
+         }
+        int mid=getMid(l,r);
+        solve(idx,val,l,mid,2*i+1,st);
+        solve(idx,val,mid+1,r,2*i+2,st);
+        st[i].first=min(st[2*i+1].first,st[2*i+2].first);
+        st[i].second=max(st[2*i+1].second,st[2*i+2].second);
+  }
+void updateValue(int *arr, PII *st, int n, int index, int new_val)
+{     arr[index]=new_val;
+      solve(index,new_val,0,n-1,0,st);
+}
