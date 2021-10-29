@@ -1,0 +1,28 @@
+void fun(int l,int r,int i,int idx,int diff,long long st[])
+  {   if(idx<l || idx>r)
+        return;
+      st[i]+=diff;
+      if(l<r)
+      {   int mid=(l+r)/2;
+          fun(l,mid,2*i+1,idx,diff,st);
+          fun(mid+1,r,2*i+2,idx,diff,st);
+      }
+  }
+void updateValue(int *arr, ll *st, int n, int i, int new_val) 
+{    int diff =new_val-arr[i];
+     arr[i]=new_val;
+     fun(0,n-1,0,i,diff,st);
+}
+
+ll solve(int l,int r,int s,int e,int idx,ll *st)
+ {    if(e<l || r<s)
+        return 0;
+      if(l<=s && e<=r)
+        return st[idx];
+      int mid=(s+e)/2;
+      return solve(l,r,s,mid,2*idx+1,st)+solve(l,r,mid+1,e,2*idx+2,st);
+ }
+ll getsum(ll *st, int n, int l, int r)
+{   
+    return solve(l,r,0,n-1,0,st);
+}
