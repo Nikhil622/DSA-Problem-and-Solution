@@ -1,0 +1,17 @@
+void fun(Node* &root,int &idx,string &s)
+ {   if(idx==s.size())
+       return;
+     root=new Node(s[idx++]);
+     if(idx<s.size())
+     {  if(s[idx]=='?')
+          fun(root->left,++idx,s);
+        else
+          fun(root->right,++idx,s);
+     }
+ }
+Node *convertExpression(string str,int i)
+{   Node* root=NULL;
+    int idx=0;
+    fun(root,idx,str);
+    return root;
+}
