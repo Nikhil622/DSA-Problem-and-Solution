@@ -1,0 +1,30 @@
+// In question it is asked minium edges to be remove :--  Instead of this it should be maximum number of edges to be remove to make a Disjoint Union Tree
+
+class Solution {
+public:
+    int fun(int s,int p,int&res,vector<int>adj[])
+     {  int val=1;
+         for(int x:adj[s])
+         {  if(x!=p)
+             {  int t=fun(x,s,res,adj);
+                if(t%2==0)
+                  ++res;
+                else
+                  val+=t;
+             }
+             
+         }
+        return val;
+     }
+	int minimumEdgeRemove(int n, vector<vector<int>>edges){
+	   vector<int>adj[n];
+	   for(auto x:edges)
+	    { 
+	        adj[x[1]-1].push_back(x[0]-1);
+	        adj[x[0]-1].push_back(x[1]-1);
+	    }
+	    int res=0;
+	    int x=fun(0,-1,res,adj);
+	    return res;
+	}
+};
