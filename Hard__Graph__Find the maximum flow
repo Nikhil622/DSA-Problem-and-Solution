@@ -1,0 +1,49 @@
+class Solution
+{
+public:
+    bool BFS(int s,int t,vector<vector<int>>&mat,vector<int>&parent)
+     {   queue<int>q;
+         q.push(s);
+         parent[s]=s;
+         int n=mat.size();
+         vector<bool>visited(n,false);
+         visited[s]=true;
+         while(q.empty()==false)
+         {  int x=q.front();
+            q.pop();
+            for(int j=0;j<n;++j)
+            {  if(visited[j]==false && mat[x][j]>0)
+                 {   parent[j]=x;
+                     visited[j]=true;
+                     if(j==t)
+                       return true;
+                    else
+                      q.push(j);
+                 }
+            }
+         }
+         return false;
+     }
+    int solve(int n,int m,vector<vector<int>>Edges)
+    {    vector<vector<int>>res(n,vector<int>(n,0)); //res : residual graph
+         for(int i=0;i<m;++i)
+           {   vector<int>v=Edges[i];
+               res[v[0]-1][v[1]-1]=res[v[0]-1][v[1]-1]+v[2];
+               res[v[1]-1][v[0]-1]=res[v[0]-1][v[1]-1];
+           }
+         vector<int>parent(n);
+         int ans=0,s=0,t=n-1;
+         while(BFS(0,n-1,res,parent)==true)
+          {   int path_min=INT_MAX;
+              for(int v=t;v!=s;v=parent[v])
+                 path_min=min(path_min,res[parent[v]][v]);
+              for(int v=t;v!=s;v=parent[v])
+               {   int u=parent[v];
+                   res[u][v]-=path_min;
+                   res[v][u]+=path_min;
+               }
+              ans+=path_min;
+          }
+        return ans;
+    }
+};
