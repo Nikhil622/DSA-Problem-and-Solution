@@ -1,0 +1,54 @@
+class Solution {
+public:
+    bool fun(int s,int p,vector<int>&v,vector<bool>&visited,vector<int>adj[])
+        {  visited[s]=true;
+           v.push_back(s);
+           for(int x:adj[s])
+           {  if(visited[x]==false)
+               {   if(fun(x,s,v,visited,adj)==true)
+                      return true;
+               }
+              else if(p!=x)
+              {  v.push_back(x);
+                 return true;
+              }
+           }
+          v.pop_back();
+          return false;
+        }
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n=edges.size();
+        vector<int>adj[n];
+        unordered_map<string,int>m;
+        int val=0;
+        for(auto x:edges)
+        {  adj[x[0]-1].push_back(x[1]-1);
+           adj[x[1]-1].push_back(x[0]-1);
+           int a=min(x[0]-1,x[1]-1),b=max(x[0]-1,x[1]-1);
+           string s=to_string(a)+" "+to_string(b);
+           m[s]=val++;
+        }
+        vector<bool>visited(n,false);
+        vector<int>v;
+        bool t=fun(0,-1,v,visited,adj);
+        int last=v.back();
+        int i=0;
+        for(i;i<v.size();++i)
+        {   if(v[i]==last)
+              break;
+        }
+        n=v.size();
+        vector<int>res(2);
+        int rank=INT_MIN;
+        for(i;i<n-1;++i)
+        {  //cout<<v[i]+1<<" "<<v[i+1]+1<<endl;
+           int a=min(v[i],v[i+1]),b=max(v[i],v[i+1]);
+           string s=to_string(a)+" "+to_string(b);
+           if(rank<m[s])
+           {  rank=m[s];
+              res[0]=a+1,res[1]=b+1;               
+           }
+        }
+        return res;
+    }
+};
