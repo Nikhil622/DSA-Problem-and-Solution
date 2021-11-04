@@ -1,0 +1,35 @@
+class Solution{
+    public:
+    pair<int,int> fun(int s,int p,int t,int &res,vector<int>adj[])
+     {  
+          pair<int,int>pr={1,0};
+          if((t%2)==0)
+             pr={0,1};
+          auto m=pr;
+          pair<int,int>temp{0,0};
+          for(int x:adj[s])
+          {  if(x!=p)
+              {  auto val=fun(x,s,t+1,res,adj);
+                 pr.first+=val.first;
+                 pr.second+=val.second;
+                 res+=(m.first*val.first+m.second*val.second);  // This count even distance node from given root node s 
+                 res+=(temp.first*val.first+temp.second*val.second); // This count even distance node across root node s                     // a) SEE EXPLANATION BELOW
+                 temp.first+=val.first;
+                 temp.second+=val.second;
+              }
+          }
+         return pr;
+     }
+    int countOfNodes(vector<int> adj[], int n)
+    {   int res=0;
+        auto x=fun(1,-1,0,res,adj);
+        return res;
+    }
+};
+
+/*   a)                  s
+                     /   |   \
+                    c1   c2  c3
+      this count total even distance nodes in c1-c2  ,  c1-c3 ,  c2-c3 subtree         
+*/
+    
