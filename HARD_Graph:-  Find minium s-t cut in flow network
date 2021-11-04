@@ -1,0 +1,108 @@
+// unordered_set<string>st;
+// vector<pair<int,int>>vt;
+// void fun(int s,int t,int val,pair<int,int>p,vector<bool>&visited,vector<pair<int,int>>adj[])
+//  {   if(s==t)
+//       {   string str=to_string(p.first)+" "+to_string(p.second);
+//           if(st.find(str)==st.end())
+//             {   vt.push_back(p);
+//                 st.insert(str);
+//             }
+//           return;
+//       }
+//      for(auto x:adj[s])
+//      {  if(visited[x.first]==false)
+//           {  visited[x.first]=true;
+//              if(x.second<val)
+//                 fun(x.first,t,x.second,{s,x.first},visited,adj);
+//              else
+//                  fun(x.first,t,x.second,p,visited,adj);
+//                 visited[x.first]=false;
+//           }
+//      }
+     
+//  }
+// bool comp(pair<int,int>a,pair<int,int>b)
+//  {   if(a.first==b.first)
+//       return a.second<b.second;
+//      return a.first<b.first;
+//  }
+// vector<int> minimumCut(vector<vector<int>> &A,int s,int t,int n){
+//     st.clear();
+//     vt.clear();
+//     vector<pair<int,int>>adj[n];
+//     for(int i=0;i<n;++i)
+//     {  for(int  j=0;j<n;++j)
+//         {  if(0<A[i][j])
+//               adj[i].push_back({j,A[i][j]});
+//         }
+//     }
+//     vector<bool>visited(n,false);
+//     vector<int>res;
+//     fun(s,t,INT_MAX,{-1,-1},visited,adj);
+//     if(vt.size()==0)
+//       return {-1};
+//     sort(vt.begin(),vt.end(),comp);
+//     for(auto x:vt)
+//     {  res.push_back(x.first);
+//       res.push_back(x.second);
+//     }
+//     return res;
+// }
+
+bool bfs(int s,int t,vector<int>&parent,vector<vector<int>>&adj)
+ {   queue<int>q;
+     q.push(s);
+     int n=adj.size();
+     vector<bool>visited(n,false);
+     visited[s]=true;
+     parent[s]=s;
+     while(q.empty()==false)
+     {  int v=q.front();
+        q.pop();
+        for(int i=0;i<n;++i)
+        {  if(visited[i]==false && adj[v][i]>0)
+             {  parent[i]=v;
+                visited[i]=true;
+                if(i==t)
+                  return true;
+                q.push(i); 
+             }
+        }
+     }
+    return false;
+ }
+
+void fun(int s,vector<bool>&visited,vector<vector<int>>&adj)
+  {   visited[s]=true;
+      int n=adj.size();
+      for(int i=0;i<n;++i)
+      {  if(visited[i]==false && adj[s][i]>0)
+            fun(i,visited,adj);
+      }
+  }
+vector<int> minimumCut(vector<vector<int>> &adj,int s,int t,int n){
+    vector<vector<int>> res=adj;
+    vector<int>parent(n);
+    while(bfs(s,t,parent,res)==true)
+     {   int min_path=INT_MAX;
+         for(int v=t;v!=s;v=parent[v])
+           min_path=min(min_path,res[parent[v]][v]);
+          for(int v=t;v!=s;v=parent[v])
+          {  int u=parent[v];
+             res[u][v]-=min_path;
+             res[v][u]+=min_path;
+          }
+     }
+    vector<bool>visited(n,false);
+    vector<int>ans;
+    fun(s,visited,res);
+     for(int i=0;i<n;++i)
+     {  for(int j=0;j<n;++j)
+          {  if(visited[i]==true && visited[j]==false  && adj[i][j]>0)
+                ans.push_back(i),ans.push_back(j);
+          }
+     }
+     if(ans.size()==0)
+       return {-1};
+     return ans;
+}
