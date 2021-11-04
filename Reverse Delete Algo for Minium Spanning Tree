@@ -1,0 +1,50 @@
+class Solution {
+     int n;
+   public:
+    static bool comp(pair<int,pair<int,int>> a,pair<int,pair<int,int>>b)
+     {   
+         return a.first>b.first;
+     }
+    void fun(int s,vector<bool>&visited,vector<vector<int>>&adj)
+       {   visited[s]=true;
+           for(int j=0;j<n;++j)
+            {   if(visited[j]==false && adj[s][j]>0)
+                   fun(j,visited,adj);
+            }
+       }
+    int RevDelMST(int a[], int n, int E) {
+        this->n=n;
+       vector<pair<int,pair<int,int>>>v;
+       vector<vector<int>>adj(n,vector<int>(n,0));
+       for(int i=0;i<3*E;i+=3)
+         {  int x=min(a[i],a[i+1]),y=max(a[i],a[i+1]);
+            v.push_back({a[i+2],{x,y}});
+            adj[x][y]=a[i+2];
+            adj[y][x]=a[i+2];
+         }
+       sort(v.begin(),v.end(),comp);
+       vector<bool>visited(n,false);
+       int res=0;
+       for(auto p:v)
+       {  int x=p.second.first,y=p.second.second;
+          int val=p.first;
+          adj[x][y]=0;
+          adj[y][x]=0;
+          int connected=0;
+          for(int i=0;i<n;++i)
+          {  if(visited[i]==false)
+               {  ++connected;
+                  fun(i,visited,adj);
+               }
+          }
+          for(int i=0;i<n;++i)
+            visited[i]=false;
+          if(1<connected)
+          {  res+=val;
+             adj[x][y]=val;
+             adj[y][x]=val;
+          }
+       }
+       return res;
+    }
+};
