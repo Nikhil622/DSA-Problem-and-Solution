@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// n nodes:  Total_Edges will between :- ( n-1, n*(n-1)/2 )
+void fun(int N,int m)
+ {  for(int i=1;i<N;++i)  // Normal straight connections
+       cout<<i<<" "<<i+1<<endl;
+    m=m-(N-1);
+    int i=3;
+    while( m+i-1>=(i*(i-1)/2))   // i-1 factor in left side :  We have already  connected points (1 to i) in straight line: (Edge x__x+1 where  x=[1,i) )
+     {   if(m== i*(i-1)/2 -i+1) 
+              break; 
+           ++i;
+         // For finding the maximum size polygon where between nodes of that polygon complete graph or
+         // any edge between nodes of that polygon can never be a brige edge
+     }
+    int n=i;  // n: maximum size of polygon where no edges bewteen nodes of that polygon (Edge i-j :  1<=(i,j)<=n )  never will be a brige edge
+    for(int i=1;(i<=n && m>0);++i)
+     {  for(int j=i+2;(j<=n && m>0);++j)
+         {  cout<<i<<" "<<j<<endl;
+            --m; 
+         }
+     }
+ }
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+	int t;
+	cin>>t;
+	while(t--)
+	{  int n,m;
+	   cin>>n>>m;
+	   fun(n,m);
+	}
+	return 0;
+}
