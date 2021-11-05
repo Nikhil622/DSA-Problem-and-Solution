@@ -1,0 +1,20 @@
+class Solution
+{
+    public:
+    long long divide(long long dividend, long long divisor) 
+    {   long long ans=0,a=dividend,b=divisor;
+        dividend=llabs(dividend),divisor=llabs(divisor);
+        while(dividend>=divisor)
+        {   long long count=0, x=divisor;
+            while(x<=dividend)
+             {  ++count;
+                x=(x<<1); // multiplying by 2
+             }
+           ans+=(1<<(count-1));
+           dividend=dividend-(x>>1);
+        }
+        if((a>=0 && b<0) || (a<=0 && b>0))
+          ans=-ans;
+        return ans;
+    }
+};
