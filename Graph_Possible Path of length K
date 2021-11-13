@@ -2,8 +2,7 @@ class Solution {
     int n,m,d;
   public:
     int fun(int s,int k,vector<vector<int>>&t,vector<vector<int>>&graph)
-       {  
-           if(t[s][k]!=-1)
+       {   if(t[s][k]!=-1)
               return t[s][k];
            if(k==0)
             {  if(s==d)
@@ -26,9 +25,6 @@ class Solution {
 	     d=v;
 	     int x;
 	    vector<vector<int>>t(n,vector<int>(k+1,-1));
-	    for(int i=1;i<=k;++i)
-	        x=fun(u,i,t,graph);
-	     return t[u][k];
+	    return fun(u,k,t,graph);
 	}
-
 };
