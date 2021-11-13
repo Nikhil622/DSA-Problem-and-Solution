@@ -1,0 +1,35 @@
+class Solution
+{   vector<char>v;
+    bool find;
+public:
+    void fun(Node* root,char x,int target)
+       {  if(root==NULL || find==true)
+              return;
+           if(root->data==target)
+            {  v.push_back(x);
+               find=true;
+               return;
+            }
+           v.push_back(x);
+           fun(root->left,'l',target);
+           fun(root->right,'r',target);
+           if(find==false)
+              v.pop_back();
+       }
+    int findMirror(Node *root, int target)
+    { v.clear();
+      this->find=false;
+      fun(root,'l',target);
+      Node* curr=root;
+      int N=v.size();
+      for(int i=1;i<N && (curr!=NULL);++i)
+       {  if(v[i]=='r')
+             curr=curr->left;
+          else
+             curr=curr->right;
+       }
+      if(curr==NULL)
+        return -1;
+      return curr->data;
+   }
+};
