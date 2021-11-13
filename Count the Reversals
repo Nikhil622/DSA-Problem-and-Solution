@@ -1,0 +1,31 @@
+int countRev (string s)
+{   int n=s.size();
+    stack<char>st;
+    for(int i=0;i<n;++i)
+     {   if(st.empty()==true || s[i]=='{' || st.top()=='}')
+           st.push(s[i]);
+         else
+           st.pop();
+     }
+    if((st.size()%2)==1)
+      return -1;
+    int x=0,y=0;
+    while(st.empty()==false)
+     {  if(st.top()=='}')
+           ++x;
+        else
+           ++y;
+        st.pop();
+     }
+
+   return x/2+y/2+(x%2)+(y%2);
+}
+
+/* 
+  }}}}}}}}}}}{}{}{}{}{}{
+After removing complete parenthesis:  }}}}}}}}}}}{   } => x=11 , { => y=1
+} : This sequence will be continuous    {: this type of characters will also be continious
+Reversing half of '}'  and  Reversing half of  '}'   :=> We will get complete parenthesis
+if x and y are odd :-  We will require addtional 2 reversal for }}.......}{......{{
+for 1st and last : For making them complete parenthesis
+*/
