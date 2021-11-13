@@ -1,0 +1,27 @@
+class Solution{
+public:
+    int fun(int s,vector<int>&t,vector<bool>&visited,vector<int>adj[])
+        {   visited[s]=true;
+            int l=1;
+            for(int x:adj[s])
+            {  if(visited[x]==false)
+                  l=max(l,1+fun(x,t,visited,adj));
+               else
+                  l=max(l,1+t[x]);
+            }
+           return t[s]=l;
+        }
+    int minColour(int N, int M, vector<int> mat[]) {
+        vector<int>t(N,-1);
+        vector<bool>visited(N,false);
+        vector<int>adj[N];
+        for(int i=0;i<M;++i)
+           adj[mat[i][0]-1].push_back(mat[i][1]-1);
+        int res=INT_MIN;
+        for(int i=0;i<N;++i)
+        {  if(visited[i]==false)
+              res=max(res,fun(i,t,visited,adj));
+        }
+        return res;
+    }
+};
