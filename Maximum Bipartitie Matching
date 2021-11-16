@@ -1,0 +1,89 @@
+// class Solution {  // Ford Fulkerson : Maximum Flow Algorithm 
+// public:
+//     bool bfs(int s,int e,vector<int>&parent,vector<vector<int>>&t)
+//       {    int n=parent.size();
+//             vector<bool>visited(n,false);
+//             queue<int>q;
+//             q.push(s);
+//             visited[s]=true;
+//             parent[s]=s;
+//             while(q.empty()==false)
+//             {  int v=q.front();
+//               q.pop();
+//               for(int i=0;i<n;++i)
+//               {  if(visited[i]==false && t[v][i]==1)
+//                     {   visited[i]=false;
+//                         parent[i]=v;
+//                         q.push(i);
+//                         if(i==e)
+//                           return true;
+//                     }
+//               }
+                
+//             }
+//           return false;
+//       }
+// 	int maximumMatch(vector<vector<int>>&g){
+// 	    int m=g.size(),n=g[0].size();
+// 	    vector<vector<int>>t(m+n+2,vector<int>(m+n+2,0));
+// 	    for(int i=0;i<m;++i)
+// 	     {  for(int j=0;j<n;++j)
+// 	          {  if(g[i][j]==1)
+// 	                t[i+1][m+1+j]=1;
+// 	          }
+// 	     }
+// 	     for(int i=1;i<=m;++i)
+// 	       t[0][i]=1;
+// 	     for(int i=m+1;i<=(m+n);++i)
+// 	       t[i][m+n+1]=1;
+// 	     vector<int>parent(m+n+2);
+// 	     int s=0,e=m+n+1;
+// 	     int res=0;
+// 	     while(bfs(s,e,parent,t)==true)
+// 	      {  int val=INT_MAX;
+// 	         for(int i=e;i!=parent[i];i=parent[i])
+// 	            val=min(val,t[parent[i]][i]);
+// 	         for(int i=e;i!=parent[i];i=parent[i])
+// 	           {  t[parent[i]][i]-=val;
+// 	              t[i][parent[i]]+=val;
+// 	           }
+// 	         res+=val;
+// 	      }
+// 	     return res;
+// 	}
+
+// };
+
+
+class Solution {
+    int m,n;
+public:
+    bool dfs(int s,vector<int>&job,vector<bool>&visited,vector<vector<int>>&adj)
+       {    
+           for(int i=0;i<n;++i)
+           {  if(visited[i]==false && adj[s][i]==1)
+                {   visited[i]=true;
+                    if(job[i]==-1 || dfs(job[i],job,visited,adj))
+                     {  job[i]=s;
+                        return true;
+                     }
+                }
+           }
+          return false;
+       }
+	int maximumMatch(vector<vector<int>>&g){
+	    m=g.size(),n=g[0].size();
+	    vector<bool>visited(n,false);
+	    vector<int>job(n,-1);
+	    int res=0;
+	    for(int i=0;i<m;++i)
+	     {  
+	         for(int j=0;j<n;++j)
+	           visited[j]=false;
+	         if(dfs(i,job,visited,g)==true)
+	           ++res;
+	     }
+	   return res;
+	}
+
+};
