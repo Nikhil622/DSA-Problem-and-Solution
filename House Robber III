@@ -1,0 +1,20 @@
+class Solution {
+    unordered_map<TreeNode*,vector<int>>m;
+public:
+    int fun(TreeNode* root,int x)
+    {  if(root==NULL)
+          return 0;
+       if(m.find(root)!=m.end() && m[root][x]!=-1)
+             return m[root][x];
+       if(m.find(root)==m.end())
+          m[root]=vector<int>(2,-1);
+       if(x==0)
+           return m[root][x]=max(root->val+fun(root->left,1)+fun(root->right,1),fun(root->left,0)+fun(root->right,0));
+       else
+           return m[root][x]=fun(root->left,0)+fun(root->right,0);
+    }
+    int rob(TreeNode* root) {
+        m.clear();
+        return fun(root,0);
+    }
+};
