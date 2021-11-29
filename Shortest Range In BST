@@ -1,0 +1,49 @@
+unordered_map<int,vector<int>>m;
+struct comp{
+    bool operator()(pair<int,int>x,pair<int,int>y)
+     {
+         return m[x.first][x.second]>m[y.first][y.second];
+     }
+};
+
+class Solution{
+    public:
+    pair<int, int> shortestRange(Node *root) {
+        m.clear();
+        queue<pair<Node*,int>>q;
+        q.push({root,0});
+        int n=0;
+        while(q.empty()==false)
+        {   auto x=q.front();
+            q.pop();
+            n=max(n,x.second);
+            m[x.second].push_back(x.first->data);
+            if(x.first->left!=NULL)
+              q.push({x.first->left,x.second+1});
+            if(x.first->right!=NULL)
+              q.push({x.first->right,x.second+1});
+        }
+       int A=INT_MAX,B=INT_MIN;
+       priority_queue<pair<int,int>,vector<pair<int,int>>,comp>pq;
+       for(int i=0;i<=n;++i)
+         {   pq.push({i,0});
+             B=max(B,m[i][0]);
+             A=min(A,m[i][0]);
+         }
+       pair<int,int>ans={A,B};
+       while(pq.empty()==false)
+       {   auto x=pq.top();
+           pq.pop();
+           A=m[x.first][x.second];
+           if(B-A<ans.second-ans.first)
+             {   ans.first=A;
+                 ans.second=B;
+             }
+           if(m[x.first].size()-1==x.second)
+              break;
+           B=max(B,m[x.first][x.second+1]);
+           pq.push({x.first,x.second+1});
+       }
+       return ans;
+    }
+};
