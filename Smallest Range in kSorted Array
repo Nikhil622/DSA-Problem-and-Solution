@@ -1,0 +1,34 @@
+struct comp{
+    bool operator()(pair<int,pair<int,int>>x,pair<int,pair<int,int>>y)
+     {
+         return x.first>y.first;
+     }
+};
+
+class Solution{
+    public:
+    pair<int,int> findSmallestRange(int a[][N], int n, int k)
+    {     priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,comp>q;
+          int A=INT_MAX,B=INT_MIN;
+          for(int i=0;i<k;++i)
+          {   q.push({a[i][0],{i,0}});
+              A=min(A,a[i][0]);
+              B=max(B,a[i][0]);
+          }
+         pair<int,int>res={A,B};
+         while(q.empty()==false)
+         {   auto x=q.top();
+             q.pop();
+             A=x.first;
+             if(B-A<res.second-res.first)
+             {   res.first=A;
+                 res.second=B;
+             }
+            if(x.second.second==n-1)
+               break;
+            B=max(B,a[x.second.first][x.second.second+1]);
+            q.push({a[x.second.first][x.second.second+1],{x.second.first,x.second.second+1}});
+         }
+        return res;
+    }  
+};
