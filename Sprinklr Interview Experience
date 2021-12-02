@@ -1,0 +1,107 @@
+// Every connected indixes group can be swapped with each other without changing the order of the remaining element
+//  1-2-3-4  let we wanted to swap 1 and 4 via given path: (No direct path between 1 and 4 )
+//  1-2-4-3
+//  1-4-2-3
+//  4-1-2-3
+//  4-2-1-3
+//  4-2-3-1  // Position of the remaining element is not changed and we swapped (1,4)
+// Same will be true for every element pair in a connected component of graph
+
+/*
+1---2---3---4---5
+    |            \
+    6---7         8             We can change every  swap any pair of elements without changing the configuration of the remaining elements.
+    |                           With condition that we can swap adjacent elements
+    9
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+int k=0;  
+vector<int>group;
+void dfs(int s,vector<int>adj[])
+ {   group[s]=k;
+     for(int x:adj[s])
+       {   if(group[x]==-1)
+             dfs(x,adj);
+       }
+ }
+void swap(int &x,int&y)
+ {   int t=x;
+     x=y;
+     y=t;
+ }
+int fun(vector<int>&a,vector<int>&b,vector<pair<int,int>>&e)
+  { group.clear();
+    k=0;
+    int n=a.size();
+  	vector<int>adj[n];
+  	for(auto x:e)
+  	{   adj[x.first-1].push_back(x.second-1);
+  		adj[x.second-1].push_back(x.first-1);
+  	}
+  	group=vector<int>(n,-1);
+  	for(int i=0;i<n;++i)
+  	{  if(group[i]==-1)
+  	     {  ++k;
+  	        dfs(i,adj);
+  	     }
+  	}
+  	unordered_map<int,int>m;
+    for(int i=0;i<n;++i)
+  	   m[a[i]]=i;
+  	int i=0;
+  	while(i<n)
+  	 {  if(a[i]!=b[i])
+  	 	  {   if(m.find(b[i])==m.end())
+  	 	        {   ++i;
+  	 	            continue;
+  	 	        }
+  	 	       int idx=m[b[i]];
+  	 	       cout<<b[i]<<" "<<idx<<" loop"<<endl;
+  	 	       if(group[idx]==group[i])
+  	 	        {    m[a[i]]=idx;
+  	 	             m[a[idx]]=i;
+  	 	             swap(a[i],a[idx]);
+  	 	        }
+  	 	       else
+  	 	         ++i;
+  	 	  }
+  	 	 else
+  	 	   ++i; 
+  	 }
+  	 int res=0;
+  	 for(int i=0;i<n;++i)
+  	 {  if(b[i]!=a[i])
+  	 	  ++res;
+  	 	cout<<a[i]<<" "<<b[i]<<endl;
+  	 }
+  	 return res;
+  }
+int main() {
+	int m,e,x,y;
+	cin>>m>>e;
+	vector<int>a(m),b(m);
+	for(int i=0;i<m;++i)
+	   cin>>a[i];
+	for(int i=0;i<m;++i)
+	   cin>>b[i];
+	vector<pair<int,int>>v(e);
+	for(int i=0;i<e;++i)
+	{  cin>>x>>y;
+	   v[i]={x,y};
+	}
+	cout<<fun(a,b,v);
+	return 0;
+}
+
+/*
+12 5
+6 5 4 3 2 1 7 8 9 10 11 12
+1 2 3 4 5 6 7 8 9 10 11 12
+1 2 
+2 3 
+3 4
+4 5
+5 6
+*/
