@@ -1,0 +1,42 @@
+class Solution
+{  
+    public:
+    string smallestWindow (string s, string p)
+    {   vector<int>v(26,0),a(26,0);
+        int n=s.size();
+        for(char x:p)
+            v[x-'a']++;
+        int l=0,r=0;
+        bool flag;
+        pair<int,int>x={-1,n};
+        while(l<=r && r<n)
+        {  
+          a[s[r]-'a']++;
+          flag=true;
+           for(int k=0;k<26;++k)
+           {  if(a[k]<v[k])
+                {  flag=false;
+                   break;
+                }
+           }
+           
+           if(flag==true)
+           {   for(l;l<r;++l)
+                {  if(a[s[l]-'a']>v[s[l]-'a'])
+                          a[s[l]-'a']--;
+                   else
+                     break;
+                }
+               if(r-l<x.second-x.first)
+                x={l,r};
+           }
+           ++r;
+        }
+        if(x.first==-1)
+          return "-1";
+        string res="";
+        for(int i=x.first;i<=x.second;++i)
+          res+=s[i];
+        return res;
+    }
+};
