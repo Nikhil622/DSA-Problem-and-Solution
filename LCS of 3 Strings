@@ -1,0 +1,14 @@
+int fun(int i,int j,int k,string &a,string &b,string &c,vector<vector<vector<int>>>&t)
+ {   if(i==a.size() || j==b.size() || k==c.size())
+        return 0;
+     if(t[i][j][k]!=-1)
+         return t[i][j][k];
+     if(a[i]==b[j] && b[j]==c[k])
+        return t[i][j][k]=1+fun(i+1,j+1,k+1,a,b,c,t);
+     else
+        return t[i][j][k]=max(fun(i+1,j,k,a,b,c,t),max(fun(i,j+1,k,a,b,c,t),fun(i,j,k+1,a,b,c,t)));
+ }
+int LCSof3 (string A, string B, string C, int a,int b,int c)
+{   vector<vector<vector<int>>>t(a,vector<vector<int>>(b,vector<int>(c,-1)));
+    return fun(0,0,0,A,B,C,t);
+}
