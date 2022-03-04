@@ -1,0 +1,33 @@
+// A: Left 
+// B: Right
+class Solution{   
+public:
+    string moveRobots(string s, string t){
+       int m=s.size(),n=t.size();
+       vector<int>v,vt;
+       string x="";
+       string y="";
+       for(int i=0;i<m;++i)
+       {  if(s[i]!='#')
+           {    v.push_back(i);
+                x+=s[i];
+           }
+       }
+       for(int i=0;i<n;++i)
+       {  if(t[i]!='#')
+           {   vt.push_back(i);
+                y+=t[i];
+           }
+       }
+       
+       if(x!=y)
+         return "No";
+       for(int i=0;i<v.size();++i)
+       {  if(s[v[i]]=='B' && v[i]>vt[i])
+             return "No";
+          if(s[v[i]]=='A' && v[i]<vt[i])
+             return "No";
+       }
+       return "Yes";
+    }
+};
