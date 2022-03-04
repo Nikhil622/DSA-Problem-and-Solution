@@ -1,0 +1,26 @@
+class Solution
+{
+   public:
+    long long countStrings(string &s)
+    {  vector<int>v(26,0);
+       long long res=0;
+       for(int i=s.size()-1;i>=0;--i)
+       {
+           v[s[i]-'a']++;
+           for(int j=0;j<26;++j)
+             {  if(j!=s[i]-'a')
+                 res=(res+v[j]);
+             }
+       }
+       for(int j=0;j<26;++j) // If we get original string after one swap : ex. (geek) : after swapping e and e : we get geek
+       {  if(v[j]>1) 
+           { ++res;
+             break;
+           }
+       }
+       return res;
+    }
+};
+
+// Logic:  Let we are at index i :-  Every character at i^th index can make distict string 
+//                                   after one swap with all the character (except char at ith index) from ( i+1 to n-1 character)
