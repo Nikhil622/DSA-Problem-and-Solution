@@ -1,0 +1,21 @@
+class Solution
+{
+    public:
+    void fun(Node* head)
+     {  if(head==NULL || head->next==NULL)
+           return;
+         fun(head->next);
+         while(head->next!=NULL)
+         {   if(head->data>head->next->data)
+               swap(head->data,head->next->data);
+             else
+               break;
+            head=head->next;
+         }
+     }
+    Node* insertionSort(Node* head)
+    {     fun(head);
+          return head;
+    }
+    
+};
