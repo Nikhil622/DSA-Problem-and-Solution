@@ -1,0 +1,31 @@
+class Solution {
+    int k;
+	public:
+	    int fun(int idx,string &s,vector<int>&v)
+	    {  if(idx==s.size())
+	          return 1;
+	        if(v[idx]!=-1)
+	         return v[idx];
+	        if(s[idx]=='0')
+	          return v[idx]=0;
+	        if(s[idx]=='1')
+	            {  if(idx+1<s.size())
+	                 return v[idx]=((fun(idx+1,s,v)+fun(idx+2,s,v))%k);
+	               else
+	                 return v[idx]=(fun(idx+1,s,v)%k);
+	            }
+	        if(s[idx]=='2')
+	            {  v[idx]=fun(idx+1,s,v);
+	               if(idx+1<s.size() && s[idx+1]-'0'<=6)
+	                  v[idx]+=fun(idx+2,s,v);
+	                return v[idx]=(v[idx]%k);
+	            }
+	         else
+	           return v[idx]=(fun(idx+1,s,v)%k);
+	   }
+	   int CountWays(string s)
+	   {  k=(1e9+7);
+		   vector<int>v(s.size(),-1);
+		   return fun(0,s,v); 
+	   }
+};
