@@ -1,0 +1,24 @@
+class Solution{
+public:
+    int findHeight(int n, int a[]){
+        vector<int>v(n,-1);
+        int res=1,p,temp=1;
+        for(int i=0;i<n;++i)
+        {  p=a[i];
+           temp=1;
+           while(p!=-1)
+           {  if(v[p]==-1)
+               {  p=a[p];
+                  ++temp;
+               }
+               else
+               { temp=v[p]+temp;
+                 break;
+               }
+           }
+           v[i]=temp;
+           res=max(res,temp);
+        }
+        return res;
+    }
+};
