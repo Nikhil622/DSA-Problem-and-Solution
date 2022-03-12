@@ -1,0 +1,21 @@
+class Solution {
+  public:
+    int fun(int x,int y,unordered_map<int,vector<int>>&a,unordered_map<int,vector<int>>&b)
+     {   if(x!=y || a[x].size()!=b[y].size())
+              return false;
+         int k=a[x].size();
+         for(int i=0;i<k;++i)
+         {  if(fun(a[x][i],b[y][k-1-i],a,b)==false)
+               return false;
+         }
+         return true;
+     }
+    int checkMirrorTree(int n, int e, int A[], int B[]) {
+        unordered_map<int,vector<int>>a,b;
+        for(int i=0;i<2*e;i=i+2)
+        {  a[A[i]].push_back(A[i+1]);
+           b[B[i]].push_back(B[i+1]);
+        }
+        return fun(1,1,a,b);
+    }
+};
