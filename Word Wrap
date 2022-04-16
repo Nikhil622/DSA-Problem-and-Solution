@@ -1,0 +1,29 @@
+class Solution {
+    int n;
+public:
+    int fun(int i,vector<int>&v,vector<int>&t,int k)
+     {   if(i==n)
+           return 0;
+         if(t[i]!=-1)
+           return t[i];
+         int x=0,res=INT_MAX,word=0;
+         for(int j=i;j<n;++j)
+           { x+=v[j];
+             ++word;
+             if(x+word-1<=k) // Line can have at max k char :- 
+             { if(j!=n-1)    // space is also character
+                res=min(res,(k-x-word+1)*(k-x-word+1)+fun(j+1,v,t,k));
+               else
+                 res=min(res,fun(j+1,v,t,k));
+             }
+             else
+               break;
+           }
+         return t[i]=res;
+     }
+    int solveWordWrap(vector<int>v, int k) 
+    {   n=v.size();
+        vector<int>t(n,-1);
+        return fun(0,v,t,k);
+    } 
+};
